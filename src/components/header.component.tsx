@@ -1,7 +1,7 @@
 'use client'
 import NextLink from 'next/link'
 
-import { Box, Flex, Heading } from '@/common/design'
+import { Box, Button, Flex, Heading } from '@/common/design'
 
 export default function Header() {
   return (
@@ -11,7 +11,7 @@ export default function Header() {
         color='gray.600'
         minH='60px'
         py={{ base: 2 }}
-        px={{ base: 150 }}
+        px={{ base: 4 }}
         borderBottom={1}
         borderStyle='solid'
         borderColor='gray.200'
@@ -21,6 +21,7 @@ export default function Header() {
           <Heading as='h1' size='lg'>
             <NextLink href='/'>shikakun</NextLink>
           </Heading>
+          <Button></Button>
         </Flex>
       </Flex>
     </Box>
