@@ -1,3 +1,6 @@
+import styles from '@/app/globals.module.css'
+import DesignProvider from '@/common/providers/design_provider'
+
 import type { Metadata } from 'next'
 
 let description = '資格試験対策用のwebアプリです。\n'
@@ -16,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ja'>
-      <body>{children}</body>
+      <body className={styles.body}>
+        <DesignProvider>{children}</DesignProvider>
+      </body>
     </html>
   )
 }
