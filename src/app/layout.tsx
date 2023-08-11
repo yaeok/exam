@@ -23,11 +23,7 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className={styles.body}>
-        <DesignProvider>
-          <Header />
-          <Main>{children}</Main>
-          <Footer />
-        </DesignProvider>
+        <DesignProvider>{children}</DesignProvider>
       </body>
     </html>
   )
