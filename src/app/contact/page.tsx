@@ -5,5 +5,9 @@
  * @description お問い合わせに関する画面
  */
 export default function ContactScreen() {
-  return
+  return (
+    <div>
+      <h1>お問い合わせ</h1>
+    </div>
+  )
 }
