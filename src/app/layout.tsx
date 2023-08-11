@@ -1,5 +1,8 @@
-import styles from '@/app/globals.module.css'
+import styles from '@/app/global.module.css'
 import DesignProvider from '@/common/providers/design_provider'
+import Footer from '@/components/footer.component'
+import Header from '@/components/header.component'
+import Main from '@/components/main.component'
 
 import type { Metadata } from 'next'
 
@@ -20,7 +23,11 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className={styles.body}>
-        <DesignProvider>{children}</DesignProvider>
+        <DesignProvider>
+          <Header />
+          <Main>{children}</Main>
+          <Footer />
+        </DesignProvider>
       </body>
     </html>
   )
