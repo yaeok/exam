@@ -18,6 +18,10 @@ import {
 } from '@/common/design'
 import { validateSignUpScreen } from '@/common/utils/validate'
 
+/** サインアップ画面
+ * @screenname SignUpScreen
+ * @description ユーザの新規登録を行う画面
+ */
 export default function SignUpScreen() {
   const router = useRouter()
   const toast = useToast()
