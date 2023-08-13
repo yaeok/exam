@@ -23,7 +23,7 @@ export const AuthGuard = ({ children }: Props) => {
   }
 
   if (user === null) {
-    router.replace('/login')
+    router.replace('/signin')
     if (!message) {
       toast({
         title: 'ログインしてください',
