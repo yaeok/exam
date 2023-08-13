@@ -1,4 +1,5 @@
 import {
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -75,7 +76,7 @@ export const signInWithEmail = async (args: {
 /**
  * Googleアカウントでサインイン
  */
-export const signinWithGoogle = async (): Promise<FirebaseResult> => {
+export const signInWithGoogle = async (): Promise<FirebaseResult> => {
   let result: FirebaseResult = { isSuccess: false, message: '' }
   const provider = new GoogleAuthProvider()
   try {
@@ -120,7 +121,7 @@ export const signUpWithEmail = async (args: {
 }): Promise<FirebaseResult> => {
   let result: FirebaseResult = { isSuccess: false, message: '' }
   try {
-    const user = await signInWithEmailAndPassword(
+    const user = await createUserWithEmailAndPassword(
       auth,
       args.email,
       args.password

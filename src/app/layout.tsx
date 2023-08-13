@@ -1,8 +1,6 @@
 import styles from '@/app/global.module.css'
+import { AuthContextProvider } from '@/common/providers/auth_providers'
 import DesignProvider from '@/common/providers/design_provider'
-import Footer from '@/components/footer.component'
-import Header from '@/components/header.component'
-import Main from '@/components/main.component'
 
 import type { Metadata } from 'next'
 
@@ -23,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className={styles.body}>
-        <DesignProvider>{children}</DesignProvider>
+        <DesignProvider>
+          <AuthContextProvider>{children}</AuthContextProvider>
+        </DesignProvider>
       </body>
     </html>
   )

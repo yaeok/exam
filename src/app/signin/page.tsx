@@ -21,6 +21,7 @@ import {
 } from '@/common/design'
 import { validateSignInScreen } from '@/common/utils/validate'
 import Loading from '@/components/loading.component'
+import { signInWithEmail, signInWithGoogle } from '@/lib/firebase/api/auth'
 
 /** サインイン画面
  * @screenname SignInScreen
@@ -33,20 +34,31 @@ export default function SignInScreen() {
   const [show, setShow] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const googleClick = () => {
-    router.push('/home')
-  }
-
   const onSubmit = handleSubmit(async (data) => {
     setLoading(true)
     // バリデーションチェック
     const error = validateSignInScreen(data.email, data.password)
     if (error.isSuccess) {
-      toast({
-        title: 'ログインに成功しました',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
+      await signInWithEmail({
+        email: data.email,
+        password: data.password,
+      }).then((res) => {
+        if (res.isSuccess) {
+          toast({
+            title: 'ログインに成功しました',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          })
+          router.push('/home')
+        } else {
+          toast({
+            title: res.message,
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+          })
+        }
       })
     } else {
       // バリデーションエラー
@@ -58,6 +70,26 @@ export default function SignInScreen() {
       })
     }
   })
+  const onClickGoogle = async () => {
+    await signInWithGoogle().then((res) => {
+      if (res.isSuccess) {
+        toast({
+          title: 'ログインに成功しました',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+        router.push('/home')
+      } else {
+        toast({
+          title: res.message,
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        })
+      }
+    })
+  }
   return loading ? (
     <Loading />
   ) : (
@@ -114,7 +146,7 @@ export default function SignInScreen() {
                 width='6'
                 height='6'
                 cursor='pointer'
-                onClick={() => googleClick()}
+                onClick={() => onClickGoogle()}
               />
               <Button
                 as={NextLink}
