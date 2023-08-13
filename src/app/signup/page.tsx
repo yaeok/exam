@@ -17,6 +17,7 @@ import {
   VStack,
 } from '@/common/design'
 import { validateSignUpScreen } from '@/common/utils/validate'
+import { signUpWithEmail } from '@/lib/firebase/api/auth'
 
 /** サインアップ画面
  * @screenname SignUpScreen
@@ -30,7 +31,7 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState(false)
   const [confirm, setConfirm] = useState(false)
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     // バリデーションチェック
     const error = validateSignUpScreen({
       username: data.username,
@@ -39,7 +40,28 @@ export default function SignUpScreen() {
       confirmPassword: data.confirm,
     })
     if (error.isSuccess) {
-      router.push('/signin')
+      await signUpWithEmail({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      }).then((res) => {
+        if (res.isSuccess) {
+          toast({
+            title: '新規登録に成功しました',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          })
+          router.push('/home')
+        } else {
+          toast({
+            title: res.message,
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+          })
+        }
+      })
     } else {
       // バリデーションエラー
       toast({

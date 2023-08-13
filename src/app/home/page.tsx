@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { CERTIFICATION_TYPE_DUMMY } from '@/common/constants/certification.dummy'
 import { List, ListItem } from '@chakra-ui/react'
 
 /**
@@ -11,14 +12,12 @@ import { List, ListItem } from '@chakra-ui/react'
  * @discription 資格プラットフォームを一覧表示する画面
  */
 
-/** ダミーの資格プラットフォーム */
-const certPltList = ['Salesforce', 'Google', 'AWS', 'Microsoft', 'Oracle']
 export default function HomeScreen() {
   const router = useRouter()
   /** cert：資格、plt：プラットフォーム */
-  const [certPlt, setCertPlt] = useState<string[]>()
+  const [certPlt, setCertPlt] = useState<string[]>([])
   useEffect(() => {
-    setCertPlt(certPltList)
+    setCertPlt((prevCertPlt) => [...prevCertPlt, ...CERTIFICATION_TYPE_DUMMY])
   }, [])
   const pageTransition = (plt: string) => {
     router.push(`/home/${plt}`)

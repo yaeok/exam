@@ -1,7 +1,8 @@
 'use client'
-import NextLink from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useRecoilValue } from 'recoil'
 
-import { Flex } from '@chakra-ui/react'
+import { userState } from '@/common/states/user'
 
 /**
  * ナビゲーション画面
@@ -9,10 +10,12 @@ import { Flex } from '@chakra-ui/react'
  * @discription ログインしているかを判断し、ログインしていればホーム画面に遷移する
  */
 export default function Navigation() {
-  return (
-    <Flex justifyContent='center' alignItems='center'>
-      <h1>ナビゲーション</h1>
-      <NextLink href={'/home'}>ホーム画面へ</NextLink>
-    </Flex>
-  )
+  const router = useRouter()
+  /** ログインユーザ */
+  const user = useRecoilValue(userState)
+  if (user) {
+    router.replace('/home')
+  } else {
+    router.replace('/signin')
+  }
 }

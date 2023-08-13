@@ -1,5 +1,7 @@
 'use client'
 
+import { RecoilRoot } from 'recoil'
+
 import { ChakraProvider } from '@chakra-ui/react'
 
 export default function DesignProvider({
@@ -7,5 +9,9 @@ export default function DesignProvider({
 }: {
   children: React.ReactNode
 }) {
-  return <ChakraProvider>{children}</ChakraProvider>
+  return (
+    <ChakraProvider>
+      <RecoilRoot>{children}</RecoilRoot>
+    </ChakraProvider>
+  )
 }

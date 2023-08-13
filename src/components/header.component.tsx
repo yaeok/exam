@@ -19,7 +19,7 @@ export default function Header() {
       >
         <Flex flex={1} justify='space-between' maxW='container.xl' mx='auto'>
           <Heading as='h1' size='lg'>
-            <NextLink href='/'>shikakun</NextLink>
+            <NextLink href='/home'>shikakun</NextLink>
           </Heading>
           <Button></Button>
         </Flex>
