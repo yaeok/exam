@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { CERTIFICATION_DUMMY } from '@/common/constants/certification.dummy'
 import {
   Accordion,
   AccordionButton,
@@ -18,9 +17,10 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from '@/common/design'
+import { Certification, ExamType } from '@/common/models/certification.model'
+import { getAllCertifications } from '@/lib/firebase/api/certifications'
 
 /**
  * ホーム画面
@@ -31,29 +31,14 @@ import {
 export default function HomeScreen() {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  /** cert：資格、plt：プラットフォーム、type：資格種類 */
-  const [certPlt, setCertPlt] = useState<string[]>([])
-  const [certType, setCertType] = useState<
-    { pltName: string; id: string; typeName: string }[]
-  >([])
+  const [certifications, setCertifications] = useState<Certification[]>([])
+  /** 資格の選択 */
   const [choicePlt, setChoicePlt] = useState<string>('')
   const [choiceCert, setChoiceCert] = useState<string>('')
   const [examId, setExamId] = useState<string>('')
   useEffect(() => {
     const fetch = async () => {
-      setCertPlt(CERTIFICATION_DUMMY.map((item) => item.pltName))
-      const dummyList: { pltName: string; id: string; typeName: string }[] = []
-
-      CERTIFICATION_DUMMY.map((item) => {
-        item.certType.map((cert) => {
-          dummyList.push({
-            pltName: item.pltName,
-            id: cert.id,
-            typeName: cert.name,
-          })
-        })
-      })
-      setCertType(dummyList)
+      await getAllCertifications().then((res) => setCertifications(res))
     }
     fetch()
   }, [])
@@ -61,37 +46,41 @@ export default function HomeScreen() {
     onClose()
     router.push(`/exam/${examId}`)
   }
-  const onClickConfirm = (plt: string, cert: string, exam_id: string) => {
+  const onClickConfirm = (plt: string, cert: string, examId: string) => {
     setChoicePlt(plt)
     setChoiceCert(cert)
-    setExamId(exam_id)
+    setExamId(examId)
     onOpen()
   }
   return (
-    <Accordion>
-      {certPlt?.map((item: string, index: number) => (
+    <Accordion allowToggle>
+      {certifications?.map((certification: Certification, index: number) => (
         <AccordionItem key={index}>
           <h2>
             <AccordionButton>
               <Box as='span' flex='1' textAlign='left'>
-                {item}
+                {certification.pltName}
               </Box>
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          {certType.map((cert) => {
-            if (cert.pltName === item) {
-              return (
-                <AccordionPanel
-                  pb={4}
-                  key={cert.id}
-                  cursor='pointer'
-                  onClick={() => onClickConfirm(item, cert.typeName, cert.id)}
-                >
-                  {cert.typeName}
-                </AccordionPanel>
-              )
-            }
+          {certification.examType.map((exam: ExamType, index: number) => {
+            return (
+              <AccordionPanel
+                pb={4}
+                key={index}
+                cursor='pointer'
+                onClick={() =>
+                  onClickConfirm(
+                    certification.pltName,
+                    exam.examTypeName,
+                    exam.examTypeId
+                  )
+                }
+              >
+                {exam.examTypeName}
+              </AccordionPanel>
+            )
           })}
         </AccordionItem>
       ))}

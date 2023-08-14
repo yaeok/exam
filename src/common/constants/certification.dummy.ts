@@ -5,7 +5,7 @@ export const CERTIFICATION_DUMMY = [
     certType: [
       {
         id: 'SF_admin_01',
-        name: 'Salesforce 認定アドミニストレーター',
+        name: 'Salesforce 認定 アドミニストレーター',
       },
       {
         id: 'SF_develop_01',

@@ -1,8 +1,9 @@
 import { atom } from 'recoil'
 import { recoilPersist } from 'recoil-persist'
 
-import { User } from '@/common/models/user.model'
-
+/**
+ * ログアウト時に表示するメッセージを管理するState
+ */
 const { persistAtom } = recoilPersist({
   key: 'message-recoil-persist',
   storage: typeof window === 'undefined' ? undefined : sessionStorage,
