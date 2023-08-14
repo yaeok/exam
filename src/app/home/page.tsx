@@ -21,7 +21,7 @@ import {
 
 export default function HomeScreen() {
   const router = useRouter()
-  /** cert：資格、plt：プラットフォーム */
+  /** cert：資格、plt：プラットフォーム、type：資格種類 */
   const [certPlt, setCertPlt] = useState<string[]>([])
   const [certType, setCertType] = useState<
     { pltName: string; id: string; typeName: string }[]
@@ -45,7 +45,7 @@ export default function HomeScreen() {
     fetch()
   }, [])
   const pageTransition = (exam_id: string) => {
-    router.push(`/home/${exam_id}`)
+    router.push(`/exam/${exam_id}`)
   }
   return (
     <Accordion>
@@ -62,7 +62,11 @@ export default function HomeScreen() {
           {certType.map((cert) => {
             if (cert.pltName === item) {
               return (
-                <AccordionPanel pb={4} key={cert.id}>
+                <AccordionPanel
+                  pb={4}
+                  key={cert.id}
+                  onClick={() => pageTransition(cert.id)}
+                >
                   {cert.typeName}
                 </AccordionPanel>
               )
