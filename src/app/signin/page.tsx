@@ -15,7 +15,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
   useToast,
   VStack,
 } from '@/common/design'
@@ -69,6 +68,7 @@ export default function SignInScreen() {
         isClosable: true,
       })
     }
+    setLoading(false)
   })
   const onClickGoogle = async () => {
     await signInWithGoogle().then((res) => {
