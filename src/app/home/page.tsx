@@ -11,8 +11,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  List,
-  ListItem,
 } from '@/common/design'
 
 /**
