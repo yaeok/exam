@@ -1,20 +1,37 @@
 export const CERTIFICATION_DUMMY = [
   {
-    certId: 'salesforce',
-    certName: 'Salesforce',
-    certDescription: 'Salesforceの認定資格',
+    docId: 'salesforce',
+    pltName: 'Salesforce',
     certType: [
       {
-        id: 'admin_1',
+        id: 'SF_admin_01',
         name: 'Salesforce 認定アドミニストレーター',
       },
       {
-        id: 'developer_1',
+        id: 'SF_develop_01',
         name: 'Salesforce 認定 Platform デベロッパー',
       },
       {
-        id: 'architect_1',
+        id: 'SF_architect_01',
         name: 'Salesforce 認定 Sharing and Visibility アーキテクト',
+      },
+    ],
+  },
+  {
+    docId: 'google_cloud_platform',
+    pltName: 'Google Cloud Platform',
+    certType: [
+      {
+        id: 'GCP_admin_01',
+        name: 'Google Cloud アドミニストレーター',
+      },
+      {
+        id: 'GCP_develop_01',
+        name: 'Google Cloud デベロッパー',
+      },
+      {
+        id: 'GCP_architect_01',
+        name: 'Google Cloud アーキテクト',
       },
     ],
   },
