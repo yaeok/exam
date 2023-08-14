@@ -21,4 +21,22 @@ export const DUMMY_QUESTION: Question[] = [
     ],
     answerList: ['A', 'C'],
   },
+  {
+    qid: '2',
+    question: '問題2',
+    choiceList: [
+      {
+        id: 'A',
+        choice:
+          '選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1選択肢1',
+      },
+      {
+        id: 'B',
+        choice: '選択肢2',
+      },
+      { id: 'C', choice: '選択肢3' },
+      { id: 'D', choice: '選択肢4' },
+    ],
+    answerList: ['A', 'B'],
+  },
 ]
