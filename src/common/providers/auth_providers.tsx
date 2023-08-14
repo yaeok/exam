@@ -1,14 +1,20 @@
 'use client'
 
-import { onAuthStateChanged } from 'firebase/auth';
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { onAuthStateChanged } from 'firebase/auth'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 
-import { messageState } from '@/common/states/message';
-import { userState } from '@/common/states/user';
-import Loading from '@/components/loading.component';
-import { auth } from '@/lib/config';
-import { getUserInfoByUid } from '@/lib/firebase/api/user';
+import { messageState } from '@/common/states/message'
+import { userState } from '@/common/states/user'
+import Loading from '@/components/loading.component'
+import { auth } from '@/lib/config'
+import { getUserInfoByUid } from '@/lib/firebase/api/users'
 
 export const AuthContext = createContext({})
 
