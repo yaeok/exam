@@ -5,9 +5,9 @@ import { db } from '@/lib/config'
 
 /**
  * 資格リストの取得
- * @returns 資格のリスト
+ * @returns Promise<Certification[]>
  */
-export const getAllCertifications = async () => {
+export const getAllCertifications = async (): Promise<Certification[]> => {
   const colRef = collection(db, 'certifications')
   const q = query(colRef, where('isActive', '==', true))
   const querySnapshot = await getDocs(q)
@@ -16,7 +16,7 @@ export const getAllCertifications = async () => {
       pltName: doc.data().pltName,
       pltPath: doc.data().pltPath,
       isActive: doc.data().isActive,
-      examType: doc.data().examType,
+      examType: doc.data().examType || [],
     } as Certification
   })
   return certifications

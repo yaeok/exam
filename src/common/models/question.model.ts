@@ -1,9 +1,10 @@
 /** 問題 */
 export type Question = {
-  qid: string
+  questionId: string
   question: string
   choiceList: Choice[]
   answerList: string[]
+  explanation: string
 }
 
 /** 選択肢 */

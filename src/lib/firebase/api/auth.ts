@@ -5,13 +5,6 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth'
-import {
-  doc,
-  getDoc,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore'
 
 import { FirebaseResult } from '@/common/models/firebase_result.model'
 import { auth, db } from '@/lib/config'
@@ -30,6 +23,7 @@ const isFirebaseError = (e: Error): e is FirebaseError => {
  * EmailとPasswordでサインイン
  * @param email
  * @param password
+ * @returns Promise<FirebaseResult>
  */
 export const signInWithEmail = async (args: {
   email: string
@@ -41,14 +35,7 @@ export const signInWithEmail = async (args: {
       auth,
       args.email,
       args.password
-    ).then((userCredential) => {
-      const docRef = doc(db, 'users', userCredential.user.uid)
-      updateDoc(docRef, {
-        uid: userCredential.user.uid,
-        loginAt: serverTimestamp(),
-      })
-      return userCredential.user
-    })
+    )
 
     if (user) {
       result = { isSuccess: true, message: 'ログインに成功しました' }
@@ -75,34 +62,13 @@ export const signInWithEmail = async (args: {
 
 /**
  * Googleアカウントでサインイン
+ * @returns Promise<FirebaseResult>
  */
 export const signInWithGoogle = async (): Promise<FirebaseResult> => {
   let result: FirebaseResult = { isSuccess: false, message: '' }
   const provider = new GoogleAuthProvider()
   try {
-    const user = await signInWithPopup(auth, provider).then(
-      async (userCredential) => {
-        const docRef = doc(db, 'users', userCredential.user.uid)
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-          updateDoc(docRef, {
-            uid: userCredential.user.uid,
-            username: userCredential.user.displayName,
-            email: userCredential.user.email,
-            loginAt: serverTimestamp(),
-          })
-        } else {
-          await setDoc(docRef, {
-            uid: userCredential.user.uid,
-            username: userCredential.user.displayName,
-            email: userCredential.user.email,
-            createdAt: serverTimestamp(),
-            loginAt: serverTimestamp(),
-          })
-        }
-        return userCredential.user
-      }
-    )
+    const user = await signInWithPopup(auth, provider)
     if (user) {
       result = { isSuccess: true, message: 'ログインに成功しました' }
     }
@@ -117,9 +83,9 @@ export const signInWithGoogle = async (): Promise<FirebaseResult> => {
  * @param username
  * @param email
  * @param password
+ * @returns Promise<FirebaseResult>
  */
 export const signUpWithEmail = async (args: {
-  username: string
   email: string
   password: string
 }): Promise<FirebaseResult> => {
@@ -129,17 +95,7 @@ export const signUpWithEmail = async (args: {
       auth,
       args.email,
       args.password
-    ).then(async (userCredential) => {
-      const docRef = doc(db, 'users', userCredential.user.uid)
-      await setDoc(docRef, {
-        uid: userCredential.user.uid,
-        username: args.username,
-        email: userCredential.user.email,
-        createdAt: serverTimestamp(),
-        loginAt: serverTimestamp(),
-      })
-      return userCredential.user
-    })
+    )
     if (user) {
       result = { isSuccess: true, message: '新規登録に成功しました' }
     }
@@ -162,6 +118,7 @@ export const signUpWithEmail = async (args: {
 
 /**
  * ログアウト処理
+ * @returns Promise<FirebaseResult>
  */
 export const logout = async (): Promise<FirebaseResult> => {
   let result: FirebaseResult = { isSuccess: false, message: '' }

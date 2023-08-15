@@ -5,6 +5,12 @@ import { auth, db } from '@/lib/config'
 
 import { getUserInfoByUid } from './users'
 
+/**
+ * お問合せの送信
+ * @param title
+ * @param content
+ * @returns Promise<FirebaseResult>
+ */
 export const postContact = async (args: {
   title: string
   content: string

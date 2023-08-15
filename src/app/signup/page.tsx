@@ -34,14 +34,12 @@ export default function SignUpScreen() {
   const onSubmit = handleSubmit(async (data) => {
     // バリデーションチェック
     const error = validateSignUpScreen({
-      username: data.username,
       email: data.email,
       password: data.password,
       confirmPassword: data.confirm,
     })
     if (error.isSuccess) {
       await signUpWithEmail({
-        username: data.username,
         email: data.email,
         password: data.password,
       }).then((res) => {
@@ -82,12 +80,6 @@ export default function SignUpScreen() {
         <Heading>新規登録</Heading>
         <form onSubmit={onSubmit}>
           <VStack alignItems='left'>
-            <Box>
-              <FormLabel htmlFor='username' textAlign='start'>
-                ユーザ名
-              </FormLabel>
-              <Input id='username' {...register('username')} />
-            </Box>
             <Box>
               <FormLabel htmlFor='email' textAlign='start'>
                 メールアドレス
