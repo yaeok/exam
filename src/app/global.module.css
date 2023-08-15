@@ -5,3 +5,23 @@
 .body::-webkit-scrollbar {
   display: none;
 }
+
+.color_empty {
+  fill: #ffffff;
+}
+
+.color_scale_1 {
+  fill: #95F985;
+}
+
+.color_scale_2 {
+  fill: #4DED30;
+}
+
+.color_scale_3 {
+  fill: #26D701;
+}
+
+.color_scale_4 {
+  fill: #00AB08;
+}

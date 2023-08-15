@@ -88,12 +88,16 @@ export const signInWithGoogle = async (): Promise<FirebaseResult> => {
           updateDoc(docRef, {
             uid: userCredential.user.uid,
             username: userCredential.user.displayName,
+            email: userCredential.user.email,
+            loginAt: serverTimestamp(),
           })
         } else {
           await setDoc(docRef, {
             uid: userCredential.user.uid,
             username: userCredential.user.displayName,
+            email: userCredential.user.email,
             createdAt: serverTimestamp(),
+            loginAt: serverTimestamp(),
           })
         }
         return userCredential.user
@@ -130,7 +134,9 @@ export const signUpWithEmail = async (args: {
       await setDoc(docRef, {
         uid: userCredential.user.uid,
         username: args.username,
+        email: userCredential.user.email,
         createdAt: serverTimestamp(),
+        loginAt: serverTimestamp(),
       })
       return userCredential.user
     })

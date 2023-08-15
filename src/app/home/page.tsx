@@ -38,7 +38,10 @@ export default function HomeScreen() {
   const [examId, setExamId] = useState<string>('')
   useEffect(() => {
     const fetch = async () => {
-      await getAllCertifications().then((res) => setCertifications(res))
+      await getAllCertifications().then((res: Certification[]) => {
+        console.log(res[0].examType[0])
+        setCertifications(res)
+      })
     }
     fetch()
   }, [])

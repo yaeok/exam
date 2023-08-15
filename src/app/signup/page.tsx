@@ -76,8 +76,6 @@ export default function SignUpScreen() {
   const passwordClick = () => setPassword(!password)
   const confirmClick = () => setConfirm(!confirm)
 
-  const googleClick = async () => {}
-
   return (
     <Flex height='100vh' justifyContent='center' alignItems='center'>
       <VStack spacing='5'>

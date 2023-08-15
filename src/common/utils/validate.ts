@@ -42,3 +42,17 @@ export const validateSignUpScreen = (args: {
   }
   return { isSuccess: true, message: '' }
 }
+
+// お問い合わせ画面のバリデーション
+export const validateContactScreen = (args: {
+  title: string
+  content: string
+}): Validate => {
+  if (!args.title) {
+    return { isSuccess: false, message: 'タイトルを入力してください' }
+  }
+  if (!args.content) {
+    return { isSuccess: false, message: '内容を入力してください' }
+  }
+  return { isSuccess: true, message: '' }
+}

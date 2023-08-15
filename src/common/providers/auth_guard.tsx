@@ -28,6 +28,7 @@ export const AuthGuard = ({ children }: Props) => {
       toast({
         title: 'ログインしてください',
         status: 'error',
+        duration: 2000,
         isClosable: true,
       })
     }
