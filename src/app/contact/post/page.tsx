@@ -15,7 +15,7 @@ import {
   VStack,
 } from '@/common/design'
 import { validateContactScreen } from '@/common/utils/validate'
-import { postContact } from '@/lib/firebase/api/contact'
+import { postContact } from '@/lib/firebase/api/contacts'
 
 /** お問い合わせ送信画面
  * @screenname PostContactScreen
