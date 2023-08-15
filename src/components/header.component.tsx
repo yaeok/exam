@@ -76,10 +76,28 @@ export default function Header() {
               gap='10px'
               paddingY='10px'
             >
-              <Button onClick={() => router.push('profile')}>
+              <Button
+                onClick={() => {
+                  router.push('/home')
+                  onClose()
+                }}
+              >
+                ホーム画面
+              </Button>
+              <Button
+                onClick={() => {
+                  router.push('/profile')
+                  onClose()
+                }}
+              >
                 プロフィール画面
               </Button>
-              <Button onClick={() => router.push('contact')}>
+              <Button
+                onClick={() => {
+                  router.push('/contact')
+                  onClose()
+                }}
+              >
                 お問い合わせ画面
               </Button>
               <Button

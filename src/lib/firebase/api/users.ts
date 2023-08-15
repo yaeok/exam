@@ -10,7 +10,7 @@ import { db } from '@/lib/config'
 export const getUserInfoByUid = async (args: {
   uid: string
 }): Promise<User> => {
-  let result: User = { uid: '', username: '' }
+  let result: User = { uid: '', username: '', email: '' }
   try {
     const docRef = doc(db, 'users', args.uid)
     const docSnap = await getDoc(docRef)
@@ -18,6 +18,7 @@ export const getUserInfoByUid = async (args: {
       result = {
         uid: docSnap.data().uid,
         username: docSnap.data().username,
+        email: docSnap.data().email,
       }
     }
   } catch (error) {
