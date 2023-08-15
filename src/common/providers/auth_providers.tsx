@@ -32,7 +32,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           setMessage(true)
           setUser({
             uid: userInfo.uid,
-            username: user.displayName!,
+            username: userInfo.username,
+            email: userInfo.email,
           })
         })
       } else {
