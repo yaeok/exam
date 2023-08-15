@@ -6,6 +6,7 @@ import { db } from '@/lib/config'
 /**
  * ユーザIdからユーザ情報を取得する
  * @param uid
+ * @returns Promise<User>
  */
 export const getUserInfoByUid = async (args: {
   uid: string

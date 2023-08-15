@@ -20,14 +20,10 @@ export const validateSignInScreen = (
 
 // サインアップ画面のバリデーション
 export const validateSignUpScreen = (args: {
-  username: string
   email: string
   password: string
   confirmPassword: string
 }): Validate => {
-  if (!args.username) {
-    return { isSuccess: false, message: 'ユーザー名を入力してください' }
-  }
   if (!args.email) {
     return { isSuccess: false, message: 'メールアドレスを入力してください' }
   }
