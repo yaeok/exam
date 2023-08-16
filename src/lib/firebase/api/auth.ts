@@ -7,7 +7,7 @@ import {
 } from 'firebase/auth'
 
 import { FirebaseResult } from '@/common/models/firebase_result.model'
-import { auth, db } from '@/lib/config'
+import { auth } from '@/lib/config'
 
 type FirebaseError = {
   code: string

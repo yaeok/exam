@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 
 import {
@@ -14,23 +13,54 @@ import {
   Td,
   Text,
   Tr,
+  useToast,
 } from '@/common/design'
 import { answerResultListState } from '@/common/states/answer_result'
+import { setAnswerResult } from '@/lib/firebase/api/users'
+
+type Props = {
+  params: {
+    exam_id: string
+  }
+}
 
 /** 完了画面
  * @screenname FinishScreen
  * @description 問題をすべて回答後に表示される画面
  */
-export default function FinishScreen() {
+export default function FinishScreen({ params }: Props) {
   const router = useRouter()
+  const toast = useToast()
   const result = useRecoilValue(answerResultListState)
   const reset = useResetRecoilState(answerResultListState)
   const correctCount = result.filter((r) => r === true).length
   const incorrectCount = result.filter((r) => r === false).length
-  const onClickHome = () => {
-    /** TODO:結果を格納する処理 */
-    reset()
-    router.push('/home')
+  const onClickHome = async () => {
+    await setAnswerResult({
+      correctCount: correctCount,
+      incorrectCount: incorrectCount,
+      correctAnswerRate: (correctCount / result.length) * 100,
+      examTypeId: params.exam_id,
+      inCorrectAnswerList: result,
+    }).then((res) => {
+      if (res) {
+        toast({
+          title: '結果を保存しました',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+        reset()
+        router.push('/home')
+      } else {
+        toast({
+          title: '結果の保存に失敗しました。',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        })
+      }
+    })
   }
   return (
     <Flex

@@ -105,7 +105,7 @@ export default function ExamScreen({ params }: Props) {
     if (numberOfQuestion === answers.length) {
       /** 出題問題数は一定して50問とし、50問出題されたら完了画面に遷移する */
       setNumberOfAnswer(0)
-      router.replace('/exam/finish')
+      router.replace(`/exam/${params.exam_id}/finish`)
     } else {
       /** 選択状態を空にする */
       setSelectedChoices([])
