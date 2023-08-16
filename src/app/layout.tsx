@@ -1,3 +1,7 @@
+import styles from '@/app/global.module.css'
+import { AuthContextProvider } from '@/common/providers/auth_providers'
+import DesignProvider from '@/common/providers/design_provider'
+
 import type { Metadata } from 'next'
 
 let description = '資格試験対策用のwebアプリです。\n'
@@ -16,7 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ja'>
-      <body>{children}</body>
+      <body className={styles.body}>
+        <DesignProvider>
+          <AuthContextProvider>{children}</AuthContextProvider>
+        </DesignProvider>
+      </body>
     </html>
   )
 }
