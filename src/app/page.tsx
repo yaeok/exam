@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 
 import { userState } from '@/common/states/user'
@@ -13,9 +14,14 @@ export default function Navigation() {
   const router = useRouter()
   /** ログインユーザ */
   const user = useRecoilValue(userState)
-  if (user) {
-    router.replace('/home')
-  } else {
-    router.replace('/signin')
-  }
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/home')
+    } else {
+      router.replace('/signin')
+    }
+  }, [])
+
+  return null
 }
