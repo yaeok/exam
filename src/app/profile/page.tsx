@@ -24,9 +24,9 @@ export default function ProfileScreen() {
   return (
     <Flex flexDirection='column' width='100%' gap='18px' paddingY='20px'>
       <Heading fontSize='22px'>プロフィール</Heading>
-      <Flex width='100%' flexDirection='row' alignContent='center' gap='20px'>
+      <Flex width='100%' flexDirection='row' alignItems='center' gap='20px'>
         <Heading fontSize='18px'>ユーザ名：</Heading>
-        <Text fontSize='14px'>{user?.username}</Text>
+        <Text fontSize='18px'>{user?.username}</Text>
       </Flex>
       <Flex
         width={{ base: '100%', md: '70%' }}

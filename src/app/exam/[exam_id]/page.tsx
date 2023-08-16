@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -33,22 +34,26 @@ type Props = {
  * @description 資格の問題を出題する画面
  */
 export default function ExamScreen({ params }: Props) {
+  /** 出題問題数 */
+  const numberOfQuestion = 5
+  /** ルーティングを管理するState */
+  const router = useRouter()
+  /** モーダルを管理するState */
   const { isOpen, onOpen, onClose } = useDisclosure()
+  /** firestoreから取得した問題文を管理するState */
   const [question, setQuestion] = useState<Question[]>([])
+  /** 画面ローディングを管理するState */
   const [loading, setLoading] = useState<boolean>(true)
+  /** 回答数を管理するState（デフォルト値：0） */
   const [numberOfAnswer, setNumberOfAnswer] =
     useRecoilState(numberOfAnswerState)
+  /** 回答結果を管理する配列のState */
   const [answers, setAnswers] = useRecoilState(answerResultState)
+  /** 回答結果を管理する単一のState */
   const [answerResult, setAnswerResult] = useState<boolean>()
+  /** ユーザが選んだ選択肢を管理するState */
   const [selectedChoices, setSelectedChoices] = useState<string[]>([])
 
-  const handleCheckboxChange = (choiceId: string) => {
-    if (selectedChoices.includes(choiceId)) {
-      setSelectedChoices(selectedChoices.filter((id) => id !== choiceId))
-    } else {
-      setSelectedChoices([...selectedChoices, choiceId])
-    }
-  }
   useEffect(() => {
     const fetchQuestion = async () => {
       await getQuestionsByExamTypeId(params.exam_id).then((res: Question[]) => {
@@ -58,16 +63,35 @@ export default function ExamScreen({ params }: Props) {
     }
     fetchQuestion()
   }, [])
+
+  /** 選択肢にチェックを付ける処理 */
+  const handleCheckboxChange = (choiceId: string) => {
+    if (selectedChoices.includes(choiceId)) {
+      setSelectedChoices(selectedChoices.filter((id) => id !== choiceId))
+    } else {
+      setSelectedChoices([...selectedChoices, choiceId])
+    }
+  }
+
+  /** 回答するボタンを押下 */
   const onClickAnswer = () => {
-    const result = funcMatchSolutions({
+    /** 選択した回答が正解かどうか調べる */
+    const result: boolean = funcMatchSolutions({
       solutions: selectedChoices,
       answerList: question[numberOfAnswer].answerList,
     })
     setAnswerResult(result)
     setAnswers([...answers, result])
+    console.log(answers)
     onOpen()
   }
+
+  /** 次の問題へ遷移する */
   const onClickNext = () => {
+    if (numberOfQuestion === answers.length) {
+      router.push('/exam/finish')
+    }
+    setSelectedChoices([])
     onClose()
     setNumberOfAnswer(numberOfAnswer + 1)
   }
@@ -134,7 +158,11 @@ export default function ExamScreen({ params }: Props) {
                   )
                 )}
               </Flex>
-              <Button onClick={() => onClickNext()}>次の問題へ</Button>
+              <Button onClick={() => onClickNext()}>
+                {answers.length == numberOfQuestion
+                  ? '結果を見る'
+                  : '次の問題へ'}
+              </Button>
             </Flex>
           </ModalBody>
         </ModalContent>
