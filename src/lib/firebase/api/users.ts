@@ -3,9 +3,11 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   serverTimestamp,
 } from 'firebase/firestore'
 
+import { AnswerResult } from '@/common/models/answer_result.model'
 import { User } from '@/common/models/user.model'
 import { auth, db } from '@/lib/config'
 
@@ -68,5 +70,29 @@ export const setAnswerResult = async (args: {
   } catch (error) {
     console.error(error)
   }
+  return result
+}
+
+/**
+ * 全ての回答結果を取得する
+ * @returns Promise<AnswerResult[]>
+ */
+export const getAllAnswerResultFromUid = async (): Promise<AnswerResult[]> => {
+  const user = auth.currentUser
+  const colRef = collection(db, 'users', user!.uid, 'results')
+  const querySnapshot = await getDocs(colRef)
+  const result: AnswerResult[] = []
+  querySnapshot.forEach((doc) => {
+    const timestamp = doc.data().executedAt.seconds
+    const date = new Date(parseInt(timestamp, 10) * 1000)
+    result.push({
+      numberOfCorrect: doc.data().numberOfCorrect,
+      numberOfInCorrect: doc.data().numberOfInCorrect,
+      correctAnswerRate: doc.data().correctAnswerRate,
+      examTypeId: doc.data().examTypeId,
+      inCorrectAnswerList: doc.data().inCorrectAnswerList,
+      executedAt: date,
+    })
+  })
   return result
 }

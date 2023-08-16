@@ -7,13 +7,13 @@ import CalendarHeatmap from 'react-calendar-heatmap'
 import styles from '@/app/global.module.css'
 
 type Props = {
-  articleList: any[]
+  answerList: any[]
 }
 
-export default function Calendar({ articleList }: Props) {
+export default function Calendar({ answerList }: Props) {
   // 今日の日付を取得
   const today = new Date()
-  // 三カ月前の日付を計算
+  // 6ヶ月前の日付を計算
   const sixMonthAgo = new Date(
     today.getFullYear(),
     today.getMonth() - 6,
@@ -22,19 +22,19 @@ export default function Calendar({ articleList }: Props) {
 
   // 投稿した日付の数をカウント
   const countsByDate: Record<string, number> = {}
-  articleList.forEach(({ createdAt }) => {
-    if (!countsByDate[createdAt]) {
-      countsByDate[createdAt] = 0
+  answerList.forEach(({ executedAt }) => {
+    if (!countsByDate[executedAt]) {
+      countsByDate[executedAt] = 0
     }
-    countsByDate[createdAt] += 1
+    countsByDate[executedAt] += 1
   })
   const [articles, setArticles] = useState<{ date: string; count: number }[]>(
     []
   )
 
   useEffect(() => {
-    const data = articleList.map((e) => {
-      const date = e.createdAt
+    const data = answerList.map((e) => {
+      const date = e.executedAt
       const count: number = countsByDate[date] || 0
       return {
         date,
