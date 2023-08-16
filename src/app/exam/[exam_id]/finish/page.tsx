@@ -92,8 +92,9 @@ export default function FinishScreen({ params }: Props) {
         </Table>
       </TableContainer>
       <Button marginY='20px' onClick={() => onClickHome()}>
-        ホームに戻る
+        結果を保存してホームに戻る
       </Button>
+      <Text fontSize='10px'>※ボタンを押さなかった場合、保存されません。</Text>
     </Flex>
   )
 }
