@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from '@/common/design'
 import { Choice, Question } from '@/common/models/question.model'
 import { answerResultState } from '@/common/states/answer_result'
@@ -38,6 +39,8 @@ export default function ExamScreen({ params }: Props) {
   const numberOfQuestion = 5
   /** ルーティングを管理するState */
   const router = useRouter()
+  /** トースト通知を管理するState */
+  const toast = useToast()
   /** モーダルを管理するState */
   const { isOpen, onOpen, onClose } = useDisclosure()
   /** firestoreから取得した問題文を管理するState */
@@ -75,6 +78,15 @@ export default function ExamScreen({ params }: Props) {
 
   /** 回答するボタンを押下 */
   const onClickAnswer = () => {
+    if (selectedChoices.length === 0) {
+      toast({
+        title: '回答が選択されていません',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
+      return
+    }
     /** 選択した回答が正解かどうか調べる */
     const result: boolean = funcMatchSolutions({
       solutions: selectedChoices,
@@ -135,7 +147,7 @@ export default function ExamScreen({ params }: Props) {
           {choice.choice}
         </Checkbox>
       ))}
-      <Button width='100%' onClick={() => onClickAnswer()}>
+      <Button width='100%' marginTop='20px' onClick={() => onClickAnswer()}>
         回答する
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
