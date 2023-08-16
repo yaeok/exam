@@ -31,6 +31,5 @@ export const getQuestionsByExamTypeId = async (
       explanation: doc.data().explanation,
     }
   })
-  console.log(questions)
   return questions
 }

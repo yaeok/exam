@@ -8,10 +8,13 @@ export const funcMatchSolutions = (args: {
   solutions: string[]
   answerList: string[]
 }): boolean => {
-  console.log(args.solutions)
-  console.log(args.answerList)
   for (const solution of args.solutions) {
     if (!args.answerList.includes(solution)) {
+      return false
+    }
+  }
+  for (const answer of args.answerList) {
+    if (!args.solutions.includes(answer)) {
       return false
     }
   }

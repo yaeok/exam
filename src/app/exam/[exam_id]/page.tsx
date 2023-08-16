@@ -18,7 +18,7 @@ import {
   useToast,
 } from '@/common/design'
 import { Choice, Question } from '@/common/models/question.model'
-import { answerResultState } from '@/common/states/answer_result'
+import { answerResultListState } from '@/common/states/answer_result'
 import { numberOfAnswerState } from '@/common/states/number_of_answer'
 import { funcMatchSolutions } from '@/common/utils/match'
 import Loading from '@/components/loading.component'
@@ -47,15 +47,16 @@ export default function ExamScreen({ params }: Props) {
   const [question, setQuestion] = useState<Question[]>([])
   /** 画面ローディングを管理するState */
   const [loading, setLoading] = useState<boolean>(true)
-  /** 回答数を管理するState（デフォルト値：0） */
-  const [numberOfAnswer, setNumberOfAnswer] =
-    useRecoilState(numberOfAnswerState)
-  /** 回答結果を管理する配列のState */
-  const [answers, setAnswers] = useRecoilState(answerResultState)
   /** 回答結果を管理する単一のState */
   const [answerResult, setAnswerResult] = useState<boolean>()
   /** ユーザが選んだ選択肢を管理するState */
   const [selectedChoices, setSelectedChoices] = useState<string[]>([])
+
+  /** 回答数を管理するState（デフォルト値：0） */
+  const [numberOfAnswer, setNumberOfAnswer] =
+    useRecoilState(numberOfAnswerState)
+  /** 回答結果を管理する配列のState */
+  const [answers, setAnswers] = useRecoilState(answerResultListState)
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -92,20 +93,25 @@ export default function ExamScreen({ params }: Props) {
       solutions: selectedChoices,
       answerList: question[numberOfAnswer].answerList,
     })
+    /** 単一回答の結果を格納 */
     setAnswerResult(result)
+    /** 回答記録配列に結果を追加 */
     setAnswers([...answers, result])
-    console.log(answers)
     onOpen()
   }
 
   /** 次の問題へ遷移する */
   const onClickNext = () => {
     if (numberOfQuestion === answers.length) {
-      router.push('/exam/finish')
+      /** 出題問題数は一定して50問とし、50問出題されたら完了画面に遷移する */
+      setNumberOfAnswer(0)
+      router.replace('/exam/finish')
+    } else {
+      /** 選択状態を空にする */
+      setSelectedChoices([])
+      onClose()
+      setNumberOfAnswer(numberOfAnswer + 1)
     }
-    setSelectedChoices([])
-    onClose()
-    setNumberOfAnswer(numberOfAnswer + 1)
   }
   return loading ? (
     <Loading />
