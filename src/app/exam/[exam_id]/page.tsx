@@ -36,7 +36,9 @@ type Props = {
  */
 export default function ExamScreen({ params }: Props) {
   /** 出題問題数 */
-  const numberOfQuestion = 5
+  const numberOfQuestion = Number.parseInt(
+    process.env.NEXT_PUBLIC_FIREBASE_NUMBER_OF_QUESTIONS!
+  )
   /** ルーティングを管理するState */
   const router = useRouter()
   /** トースト通知を管理するState */
@@ -74,9 +76,24 @@ export default function ExamScreen({ params }: Props) {
   /** 選択肢にチェックを付ける処理 */
   const handleCheckboxChange = (choiceId: string) => {
     if (selectedChoices.includes(choiceId)) {
+      /** 既に選択しているCheckboxがタップされたら配列から削除 */
       setSelectedChoices(selectedChoices.filter((id) => id !== choiceId))
     } else {
-      setSelectedChoices([...selectedChoices, choiceId])
+      /** 未選択のCheckboxがタップされたら配列に格納 */
+      if (
+        selectedChoices.length >= question[numberOfAnswer].answerList.length
+      ) {
+        /** 正解数と同じ数だけ選択できるように制御 */
+        return toast({
+          title: `${question[numberOfAnswer].answerList.length}つ選択してください`,
+          status: 'info',
+          duration: 2000,
+          isClosable: true,
+        })
+      } else {
+        /** 条件をクリアして配列に格納 */
+        setSelectedChoices([...selectedChoices, choiceId])
+      }
     }
   }
 
@@ -106,9 +123,10 @@ export default function ExamScreen({ params }: Props) {
   /** 次の問題へ遷移する */
   const onClickNext = () => {
     if (numberOfQuestion === answers.length) {
+      setLoading(true)
       /** 出題問題数は一定して50問とし、50問出題されたら完了画面に遷移する */
-      setNumberOfAnswer(0)
       router.replace(`/exam/${params.exam_id}/finish`)
+      setNumberOfAnswer(0)
     } else {
       /** 選択状態を空にする */
       setSelectedChoices([])
@@ -147,7 +165,6 @@ export default function ExamScreen({ params }: Props) {
           borderRadius='10px'
           border='1px solid #E6E6E6'
           cursor='pointer'
-          // _hover={{ background: '#E6E6E6' }}
           onChange={() => handleCheckboxChange(choice.id)}
           isChecked={selectedChoices.includes(choice.id)}
         >

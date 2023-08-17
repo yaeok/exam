@@ -49,7 +49,6 @@ export const getUserInfoByUid = async (args: {
 export const setAnswerResult = async (args: {
   correctCount: number
   incorrectCount: number
-  correctAnswerRate: number
   examTypeId: string
   inCorrectAnswerList: boolean[]
 }): Promise<boolean> => {
@@ -60,7 +59,6 @@ export const setAnswerResult = async (args: {
     await addDoc(colRef, {
       numberOfCorrect: args.correctCount,
       numberOfInCorrect: args.incorrectCount,
-      correctAnswerRate: args.correctAnswerRate,
       examTypeId: args.examTypeId,
       inCorrectAnswerList: args.inCorrectAnswerList,
       executedAt: serverTimestamp(),
@@ -88,7 +86,6 @@ export const getAllAnswerResultFromUid = async (): Promise<AnswerResult[]> => {
     result.push({
       numberOfCorrect: doc.data().numberOfCorrect,
       numberOfInCorrect: doc.data().numberOfInCorrect,
-      correctAnswerRate: doc.data().correctAnswerRate,
       examTypeId: doc.data().examTypeId,
       inCorrectAnswerList: doc.data().inCorrectAnswerList,
       executedAt: date,

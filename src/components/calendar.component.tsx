@@ -1,13 +1,15 @@
 'use client'
 import 'react-calendar-heatmap/dist/styles.css'
 
+import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import CalendarHeatmap from 'react-calendar-heatmap'
 
 import styles from '@/app/global.module.css'
+import { AnswerResult } from '@/common/models/answer_result.model'
 
 type Props = {
-  answerList: any[]
+  answerList: AnswerResult[]
 }
 
 export default function Calendar({ answerList }: Props) {
@@ -23,32 +25,30 @@ export default function Calendar({ answerList }: Props) {
   // 投稿した日付の数をカウント
   const countsByDate: Record<string, number> = {}
   answerList.forEach(({ executedAt }) => {
-    if (!countsByDate[executedAt]) {
-      countsByDate[executedAt] = 0
+    if (!countsByDate[format(executedAt, 'yyyy-MM-dd')]) {
+      countsByDate[format(executedAt, 'yyyy-MM-dd')] = 0
     }
-    countsByDate[executedAt] += 1
+    countsByDate[format(executedAt, 'yyyy-MM-dd')] += 1
   })
-  const [articles, setArticles] = useState<{ date: string; count: number }[]>(
-    []
-  )
+  const [results, setResults] = useState<{ date: string; count: number }[]>([])
 
   useEffect(() => {
     const data = answerList.map((e) => {
-      const date = e.executedAt
+      const date = format(e.executedAt, 'yyyy-MM-dd')
       const count: number = countsByDate[date] || 0
       return {
         date,
         count,
       }
     })
-    setArticles(data)
+    setResults(data)
   }, [])
 
   return (
     <CalendarHeatmap
       startDate={sixMonthAgo}
       endDate={today}
-      values={articles}
+      values={results}
       classForValue={(value) => {
         if (!value) {
           return styles.color_empty

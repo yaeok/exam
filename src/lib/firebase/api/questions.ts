@@ -21,7 +21,7 @@ export const getQuestionsByExamTypeId = async (args: {
     querySnapshot.docs[0].id,
     args.examTypeId
   )
-  const questionQuery = query(questionColRef, limit(5))
+  const questionQuery = query(questionColRef, limit(args.limit))
   const questionQuerySnapshot = await getDocs(questionQuery)
   const questions: Question[] = questionQuerySnapshot.docs.map((doc) => {
     return {
