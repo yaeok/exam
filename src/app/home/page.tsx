@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useResetRecoilState } from 'recoil'
 
 import {
   Accordion,
@@ -20,6 +21,8 @@ import {
   useDisclosure,
 } from '@/common/design'
 import { Certification, ExamType } from '@/common/models/certification.model'
+import { answerResultListState } from '@/common/states/answer_result'
+import { numberOfAnswerState } from '@/common/states/number_of_answer'
 import { getAllCertifications } from '@/lib/firebase/api/certifications'
 
 /**
@@ -36,6 +39,11 @@ export default function HomeScreen() {
   const [choicePlt, setChoicePlt] = useState<string>('')
   const [choiceCert, setChoiceCert] = useState<string>('')
   const [examId, setExamId] = useState<string>('')
+
+  /** 回答数を管理するState（デフォルト値：0） */
+  const resetNumberOfAnswer = useResetRecoilState(numberOfAnswerState)
+  /** 回答結果を管理する配列のState */
+  const resetAnswer = useResetRecoilState(answerResultListState)
   useEffect(() => {
     const fetch = async () => {
       await getAllCertifications().then((res: Certification[]) => {
@@ -46,6 +54,8 @@ export default function HomeScreen() {
   }, [])
   const pageTransition = () => {
     onClose()
+    resetNumberOfAnswer()
+    resetAnswer()
     router.push(`/exam/${examId}`)
   }
   const onClickConfirm = (plt: string, cert: string, examId: string) => {
@@ -66,24 +76,26 @@ export default function HomeScreen() {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          {certification.examType.map((exam: ExamType, index: number) => {
-            return (
-              <AccordionPanel
-                pb={4}
-                key={index}
-                cursor='pointer'
-                onClick={() =>
-                  onClickConfirm(
-                    certification.pltName,
-                    exam.examTypeName,
-                    exam.examTypeId
-                  )
-                }
-              >
-                {exam.examTypeName}
-              </AccordionPanel>
-            )
-          })}
+          {certification.examType
+            .filter((value) => value.isActive === true)
+            .map((exam: ExamType, index: number) => {
+              return (
+                <AccordionPanel
+                  pb={4}
+                  key={index}
+                  cursor='pointer'
+                  onClick={() =>
+                    onClickConfirm(
+                      certification.pltName,
+                      exam.examTypeName,
+                      exam.examTypeId
+                    )
+                  }
+                >
+                  {exam.examTypeName}
+                </AccordionPanel>
+              )
+            })}
         </AccordionItem>
       ))}
       <Modal isOpen={isOpen} onClose={onClose} size='lg' isCentered>

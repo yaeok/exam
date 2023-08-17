@@ -8,17 +8,18 @@ import { db } from '@/lib/config'
  * @param examTypeId
  * @returns Promise<Question[]>
  */
-export const getQuestionsByExamTypeId = async (
+export const getQuestionsByExamTypeId = async (args: {
   examTypeId: string
-): Promise<Question[]> => {
+  limit: number
+}): Promise<Question[]> => {
   const colRef = collection(db, 'questions')
-  const q = query(colRef, where('pltType', 'array-contains', examTypeId))
+  const q = query(colRef, where('pltType', 'array-contains', args.examTypeId))
   const querySnapshot = await getDocs(q)
   const questionColRef = collection(
     db,
     'questions',
     querySnapshot.docs[0].id,
-    examTypeId
+    args.examTypeId
   )
   const questionQuery = query(questionColRef, limit(5))
   const questionQuerySnapshot = await getDocs(questionQuery)
