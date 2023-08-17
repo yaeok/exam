@@ -55,7 +55,7 @@ export default function ProfileScreen() {
         <Text fontSize='18px'>{user?.username}</Text>
       </Flex>
       <Flex
-        width={{ base: '100%', md: '70%' }}
+        width={{ base: '100%', md: '100%', lg: '60%' }}
         justifyContent='center'
         alignItems='center'
         marginX={{ base: '0px', md: 'auto' }}
