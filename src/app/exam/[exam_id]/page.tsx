@@ -60,7 +60,10 @@ export default function ExamScreen({ params }: Props) {
 
   useEffect(() => {
     const fetchQuestion = async () => {
-      await getQuestionsByExamTypeId(params.exam_id).then((res: Question[]) => {
+      await getQuestionsByExamTypeId({
+        examTypeId: params.exam_id,
+        limit: numberOfQuestion,
+      }).then((res: Question[]) => {
         setQuestion(res)
       })
       setLoading(false)
@@ -158,7 +161,7 @@ export default function ExamScreen({ params }: Props) {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent marginX='20px'>
+        <ModalContent margin='20px'>
           <ModalBody>
             <Flex
               width='100%'
@@ -170,12 +173,16 @@ export default function ExamScreen({ params }: Props) {
                 {answerResult ? '正解' : '不正解'}
               </Heading>
               <Flex flexDirection='row' alignContent='start' gap='10px'>
+                <Heading size='sm'>回答：</Heading>
                 {question[numberOfAnswer].answerList.map(
                   (item: string, index: number) => (
                     <Text key={index}>{item}</Text>
                   )
                 )}
               </Flex>
+              <Text fontSize='12px'>
+                {question[numberOfAnswer].explanation}
+              </Text>
               <Button onClick={() => onClickNext()}>
                 {answers.length == numberOfQuestion
                   ? '結果を見る'

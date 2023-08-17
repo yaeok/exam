@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
+import { ContactData } from '@/common/constants/contact'
 import {
   Accordion,
   AccordionButton,
@@ -24,26 +25,27 @@ export default function ContactScreen() {
   return (
     <Flex width='100%' flexDirection='column' gap='24px' paddingY='20px'>
       <Heading fontSize='22px'>お問い合わせ</Heading>
-      <Flex width='100%' flexDirection='column' gap='10px'>
+      <Flex width='100%' flexDirection='column' gap='18px'>
         <Heading fontSize='18px'>よくあるお問い合わせ</Heading>
         <Accordion allowMultiple>
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Box as='span' flex='1' textAlign='left'>
-                  テストボタン
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>テスト</AccordionPanel>
-          </AccordionItem>
+          {ContactData.map((data) => (
+            <AccordionItem key={data.id}>
+              <h2>
+                <AccordionButton>
+                  <Box as='span' flex='1' textAlign='left'>
+                    {data.title}
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>{data.description}</AccordionPanel>
+            </AccordionItem>
+          ))}
         </Accordion>
       </Flex>
       <Flex width='100%' flexDirection='column' gap='5px'>
         <Heading fontSize='18px'>Email・SNS</Heading>
         <Text fontSize='14px'>Email: yaeok.engneer@gmail.com</Text>
-        <Text fontSize='14px'>SNS: [twitter]</Text>
       </Flex>
       <Flex width='100%' flexDirection='column' gap='5px'>
         <Heading fontSize='18px'>お問い合わせフォーム</Heading>
