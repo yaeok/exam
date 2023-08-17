@@ -18,6 +18,7 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from '@/common/design'
 import { Certification, ExamType } from '@/common/models/certification.model'
@@ -115,6 +116,34 @@ export default function HomeScreen() {
                 {choiceCert}
               </Heading>
               <Button onClick={() => pageTransition()}>スタート</Button>
+              <Flex
+                width='100%'
+                bg='red.200'
+                padding='10px'
+                borderRadius='10px'
+                flexDirection='column'
+                justifyContent='start'
+              >
+                <Text
+                  paddingY='5px'
+                  fontSize='16px'
+                  textAlign='center'
+                  fontWeight='bold'
+                >
+                  注意事項
+                </Text>
+                <Text fontSize='14px'>
+                  出題される問題はあくまで予想問題であり、
+                  必ずしも試験本番に出題されるとは限りません。
+                </Text>
+                <Text fontSize='14px'>
+                  また、本アプリで出力される解答・解説については、
+                  個人で調査を実施した結果であるため、正解とは限りません。
+                </Text>
+                <Text fontSize='14px'>
+                  上記をご理解頂いたうえで、ご利用ください。
+                </Text>
+              </Flex>
             </Flex>
           </ModalBody>
         </ModalContent>

@@ -48,7 +48,7 @@ export default function ProfileScreen() {
   return loading ? (
     <Loading />
   ) : (
-    <Flex flexDirection='column' width='100%' gap='18px' paddingY='20px'>
+    <Flex flexDirection='column' width='100%' gap='18px' paddingY='5px'>
       <Heading fontSize='22px'>プロフィール</Heading>
       <Flex width='100%' flexDirection='row' alignItems='center' gap='20px'>
         <Heading fontSize='18px'>ユーザ名：</Heading>
