@@ -138,7 +138,8 @@ export default function HomeScreen() {
                 </Text>
                 <Text fontSize='14px'>
                   また、本アプリで出力される解答・解説については、
-                  個人で調査を実施した結果であるため、正解とは限りません。
+                  個人で調査を実施した結果であるため、
+                  必ずしも正しい解答とは限りません。
                 </Text>
                 <Text fontSize='14px'>
                   上記をご理解頂いたうえで、ご利用ください。
