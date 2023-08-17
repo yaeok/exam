@@ -87,6 +87,7 @@ export default function ExamScreen({ params }: Props) {
         return toast({
           title: `${question[numberOfAnswer].answerList.length}つ選択してください`,
           status: 'info',
+          position: 'top',
           duration: 2000,
           isClosable: true,
         })
@@ -103,6 +104,7 @@ export default function ExamScreen({ params }: Props) {
       toast({
         title: '回答が選択されていません',
         status: 'error',
+        position: 'top',
         duration: 2000,
         isClosable: true,
       })
@@ -155,6 +157,11 @@ export default function ExamScreen({ params }: Props) {
         borderRadius='10px'
       >
         <Text>{question[numberOfAnswer].question}</Text>
+      </Flex>
+      <Flex width='100%' justifyContent='start' paddingY='10px'>
+        <Text textAlign='left'>
+          {question[numberOfAnswer].answerList.length}つ選択
+        </Text>
       </Flex>
       {question[numberOfAnswer].choiceList.map((choice: Choice) => (
         <Checkbox
