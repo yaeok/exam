@@ -4,8 +4,6 @@ export type AnswerResult = {
   numberOfCorrect: number
   /** 誤答数 */
   numberOfInCorrect: number
-  /** 正解率 */
-  correctAnswerRate: number
   /** 資格タイプId */
   examTypeId: string
   /** 回答結果 */
