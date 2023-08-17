@@ -37,6 +37,7 @@ export default function PostContactScreen() {
           if (res.isSuccess) {
             toast({
               title: res.message,
+              description: '貴重なご意見ありがとうございます',
               status: 'success',
               duration: 2000,
               isClosable: true,
@@ -63,7 +64,7 @@ export default function PostContactScreen() {
     }
   })
   return (
-    <Flex flexDirection='column' width='100%' gap='24px' paddingY='20px'>
+    <Flex flexDirection='column' width='100%' gap='24px' paddingY='5px'>
       <Heading fontSize='22px'>お問い合わせフォーム</Heading>
       <form onSubmit={onSubmit}>
         <VStack alignItems='left'>

@@ -23,8 +23,8 @@ import {
 export default function ContactScreen() {
   const router = useRouter()
   return (
-    <Flex width='100%' flexDirection='column' gap='24px' paddingY='20px'>
-      <Heading fontSize='22px'>お問い合わせ</Heading>
+    <Flex width='100%' flexDirection='column' gap='24px' paddingY='5px'>
+      <Heading fontSize='22px'>お問い合わせ画面</Heading>
       <Flex width='100%' flexDirection='column' gap='18px'>
         <Heading fontSize='18px'>よくあるお問い合わせ</Heading>
         <Accordion allowMultiple>
@@ -49,7 +49,10 @@ export default function ContactScreen() {
       </Flex>
       <Flex width='100%' flexDirection='column' gap='5px'>
         <Heading fontSize='18px'>お問い合わせフォーム</Heading>
-        <Text fontSize='14px'>お問い合わせ内容を入力してください</Text>
+        <Text fontSize='14px'>お問い合わせ・フィードバック・改善点等の</Text>
+        <Text fontSize='14px'>
+          ご提案がございましたら、こちらからお願いします。
+        </Text>
         <Button onClick={() => router.push('/contact/post')}>
           入力フォームへ
         </Button>
