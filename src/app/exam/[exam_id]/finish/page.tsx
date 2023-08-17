@@ -46,7 +46,6 @@ export default function FinishScreen({ params }: Props) {
     await setAnswerResult({
       correctCount: correctCount,
       incorrectCount: incorrectCount,
-      correctAnswerRate: (correctCount / result.length) * 100,
       examTypeId: params.exam_id,
       inCorrectAnswerList: result,
     }).then((res) => {
