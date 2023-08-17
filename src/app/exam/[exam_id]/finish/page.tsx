@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 
 import {
@@ -16,6 +17,7 @@ import {
   useToast,
 } from '@/common/design'
 import { answerResultListState } from '@/common/states/answer_result'
+import Loading from '@/components/loading.component'
 import { setAnswerResult } from '@/lib/firebase/api/users'
 
 type Props = {
@@ -31,11 +33,16 @@ type Props = {
 export default function FinishScreen({ params }: Props) {
   const router = useRouter()
   const toast = useToast()
+  const [loading, setLoading] = useState<boolean>(false)
+  /** 回答結果 */
   const result = useRecoilValue(answerResultListState)
   const reset = useResetRecoilState(answerResultListState)
+  /** 正解数 */
   const correctCount = result.filter((r) => r === true).length
+  /** 誤答数 */
   const incorrectCount = result.filter((r) => r === false).length
   const onClickHome = async () => {
+    setLoading(true)
     await setAnswerResult({
       correctCount: correctCount,
       incorrectCount: incorrectCount,
@@ -50,8 +57,8 @@ export default function FinishScreen({ params }: Props) {
           duration: 2000,
           isClosable: true,
         })
-        reset()
         router.push('/home')
+        reset()
       } else {
         toast({
           title: '結果の保存に失敗しました。',
@@ -61,8 +68,11 @@ export default function FinishScreen({ params }: Props) {
         })
       }
     })
+    setLoading(false)
   }
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <Flex
       width='100%'
       gap='20px'
@@ -91,10 +101,12 @@ export default function FinishScreen({ params }: Props) {
           </Tbody>
         </Table>
       </TableContainer>
-      <Button marginY='20px' onClick={() => onClickHome()}>
-        結果を保存してホームに戻る
-      </Button>
-      <Text fontSize='10px'>※ボタンを押さなかった場合、保存されません。</Text>
+      <Flex width='100%' flexDirection='column' justifyContent='start'>
+        <Button marginY='20px' onClick={() => onClickHome()}>
+          結果を保存してホームに戻る
+        </Button>
+        <Text fontSize='14px'>※ボタンを押さなかった場合、保存されません。</Text>
+      </Flex>
     </Flex>
   )
 }
