@@ -74,9 +74,24 @@ export default function ExamScreen({ params }: Props) {
   /** 選択肢にチェックを付ける処理 */
   const handleCheckboxChange = (choiceId: string) => {
     if (selectedChoices.includes(choiceId)) {
+      /** 既に選択しているCheckboxがタップされたら配列から削除 */
       setSelectedChoices(selectedChoices.filter((id) => id !== choiceId))
     } else {
-      setSelectedChoices([...selectedChoices, choiceId])
+      /** 未選択のCheckboxがタップされたら配列に格納 */
+      if (
+        selectedChoices.length >= question[numberOfAnswer].answerList.length
+      ) {
+        /** 正解数と同じ数だけ選択できるように制御 */
+        return toast({
+          title: `${question[numberOfAnswer].answerList.length}つ選択してください`,
+          status: 'info',
+          duration: 2000,
+          isClosable: true,
+        })
+      } else {
+        /** 条件をクリアして配列に格納 */
+        setSelectedChoices([...selectedChoices, choiceId])
+      }
     }
   }
 
