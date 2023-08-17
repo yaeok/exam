@@ -36,7 +36,9 @@ type Props = {
  */
 export default function ExamScreen({ params }: Props) {
   /** 出題問題数 */
-  const numberOfQuestion = 5
+  const numberOfQuestion = Number.parseInt(
+    process.env.NEXT_PUBLIC_FIREBASE_NUMBER_OF_QUESTIONS!
+  )
   /** ルーティングを管理するState */
   const router = useRouter()
   /** トースト通知を管理するState */
