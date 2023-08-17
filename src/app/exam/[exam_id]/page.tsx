@@ -121,9 +121,10 @@ export default function ExamScreen({ params }: Props) {
   /** 次の問題へ遷移する */
   const onClickNext = () => {
     if (numberOfQuestion === answers.length) {
+      setLoading(true)
       /** 出題問題数は一定して50問とし、50問出題されたら完了画面に遷移する */
-      setNumberOfAnswer(0)
       router.replace(`/exam/${params.exam_id}/finish`)
+      setNumberOfAnswer(0)
     } else {
       /** 選択状態を空にする */
       setSelectedChoices([])
@@ -162,7 +163,6 @@ export default function ExamScreen({ params }: Props) {
           borderRadius='10px'
           border='1px solid #E6E6E6'
           cursor='pointer'
-          // _hover={{ background: '#E6E6E6' }}
           onChange={() => handleCheckboxChange(choice.id)}
           isChecked={selectedChoices.includes(choice.id)}
         >

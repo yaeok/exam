@@ -65,9 +65,9 @@ export default function FinishScreen({ params }: Props) {
           duration: 2000,
           isClosable: true,
         })
+        setLoading(false)
       }
     })
-    setLoading(false)
   }
   return loading ? (
     <Loading />
