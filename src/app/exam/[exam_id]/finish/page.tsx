@@ -75,7 +75,7 @@ export default function FinishScreen({ params }: Props) {
     <Flex
       width='100%'
       gap='20px'
-      paddingY='10px'
+      paddingY='5px'
       flexDirection='column'
       justifyContent='center'
     >
