@@ -9,8 +9,19 @@ description += 'IT系の資格試験の過去問に特化しています。'
 description += '本アプリは非公式であり、個人で運営しています。'
 
 export const metadata: Metadata = {
-  title: '資格対策アプリ',
+  title: 'shikakun',
   description: description,
+  applicationName: 'shikakun',
+  keywords: [
+    'shikakun',
+    '資格',
+    '過去問',
+    'IT',
+    'IT資格',
+    'IT過去問',
+    'Salesforce',
+    'Google Cloud Platform',
+  ],
 }
 
 export default function RootLayout({
