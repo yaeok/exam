@@ -34,6 +34,7 @@ export default function ProfileScreen() {
   useEffect(() => {
     const fetchAnswerResultList = async () => {
       await getAllAnswerResultFromUid().then((data: AnswerResult[]) => {
+        if (data.length === 0) return
         setAnswerResultList(data)
         const { correctCount, inCorrectCount, correctAnswerRate } =
           funcCalculation(data)
@@ -55,7 +56,7 @@ export default function ProfileScreen() {
         <Text fontSize='18px'>{user?.username}</Text>
       </Flex>
       <Flex
-        width={{ base: '100%', md: '100%', lg: '60%' }}
+        width={{ base: '100%', sm: '100%', md: '100%', lg: '60%' }}
         justifyContent='center'
         alignItems='center'
         marginX={{ base: '0px', md: 'auto' }}
