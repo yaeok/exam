@@ -1,9 +1,10 @@
 'use client'
-
+import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
 import {
+  Button,
   Flex,
   Heading,
   Table,
@@ -50,10 +51,21 @@ export default function ProfileScreen() {
     <Loading />
   ) : (
     <Flex flexDirection='column' width='100%' gap='18px' paddingY='5px'>
-      <Heading fontSize='22px'>プロフィール</Heading>
+      <Flex width='100%' flexDirection='row' justifyContent='space-between'>
+        <Heading fontSize='22px'>プロフィール</Heading>
+        <Button as={NextLink} href='/profile/update'>
+          更新
+        </Button>
+      </Flex>
       <Flex width='100%' flexDirection='row' alignItems='center' gap='20px'>
         <Heading fontSize='18px'>ユーザ名：</Heading>
         <Text fontSize='18px'>{user?.username}</Text>
+      </Flex>
+      <Flex width='100%' flexDirection='row' alignItems='center' gap='20px'>
+        <Heading fontSize='18px'>定期メール：</Heading>
+        <Text fontSize='18px'>
+          {user?.permSendEmail ? '受け取る' : '受け取らない'}
+        </Text>
       </Flex>
       <Flex
         width={{ base: '100%', sm: '100%', md: '100%', lg: '60%' }}

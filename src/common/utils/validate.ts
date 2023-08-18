@@ -52,3 +52,11 @@ export const validateContactScreen = (args: {
   }
   return { isSuccess: true, message: '' }
 }
+
+// プロフィール更新画面のバリデーション
+export const validateUpdateProfileScreen = (username: string): Validate => {
+  if (!username) {
+    return { isSuccess: false, message: 'ユーザ名を入力してください' }
+  }
+  return { isSuccess: true, message: '' }
+}
