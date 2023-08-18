@@ -75,7 +75,7 @@ export default function SignInScreen() {
       if (res.isSuccess) {
         router.push('/home')
         toast({
-          title: 'ログインに成功しました',
+          title: res.message,
           status: 'success',
           duration: 2000,
           isClosable: true,
