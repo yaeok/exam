@@ -16,8 +16,10 @@ export const generateUniqueRandomNumbers = (args: {
     )
   }
 
+  /** 重複しないようにSetを宣言 */
   const uniqueNumbers: Set<number> = new Set()
 
+  /** 生成した配列のサイズが指定した個数に達したらループを抜ける */
   while (uniqueNumbers.size < args.count) {
     const randomNumber =
       Math.floor(Math.random() * (args.max - args.min + 1)) + args.min
