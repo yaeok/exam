@@ -43,13 +43,13 @@ export default function SignInScreen() {
         password: data.password,
       }).then((res) => {
         if (res.isSuccess) {
+          router.push('/home')
           toast({
             title: 'ログインに成功しました',
             status: 'success',
             duration: 2000,
             isClosable: true,
           })
-          router.push('/home')
         } else {
           toast({
             title: res.message,

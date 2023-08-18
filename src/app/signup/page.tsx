@@ -44,13 +44,13 @@ export default function SignUpScreen() {
         password: data.password,
       }).then((res) => {
         if (res.isSuccess) {
+          router.push('/home')
           toast({
             title: '新規登録に成功しました',
             status: 'success',
             duration: 2000,
             isClosable: true,
           })
-          router.push('/home')
         } else {
           toast({
             title: res.message,
