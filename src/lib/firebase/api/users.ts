@@ -5,9 +5,11 @@ import {
   getDoc,
   getDocs,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore'
 
 import { AnswerResult } from '@/common/models/answer_result.model'
+import { FirebaseResult } from '@/common/models/firebase_result.model'
 import { User } from '@/common/models/user.model'
 import { auth, db } from '@/lib/config'
 
@@ -99,5 +101,41 @@ export const getAllAnswerResultFromUid = async (): Promise<AnswerResult[]> => {
       executedAt: date,
     })
   })
+  return result
+}
+
+/**
+ * ユーザ情報を更新する
+ * @param username
+ * @param permSendEmail
+ * @return Promise<FirebaseResult>
+ */
+export const updateUserInfo = async (args: {
+  username: string
+  permSendEmail: boolean
+}): Promise<FirebaseResult> => {
+  let result: FirebaseResult = {
+    isSuccess: false,
+    message: '',
+  }
+  const user = auth.currentUser
+  const docRef = doc(db, 'users', user!.uid)
+  try {
+    await updateDoc(docRef, {
+      username: args.username,
+      permSendEmail: args.permSendEmail,
+    }).then(() => {
+      result = {
+        isSuccess: true,
+        message: 'ユーザ情報を更新しました。',
+      }
+    })
+  } catch (error) {
+    result = {
+      isSuccess: false,
+      message: 'ユーザ情報の更新に失敗しました。',
+    }
+  }
+
   return result
 }
