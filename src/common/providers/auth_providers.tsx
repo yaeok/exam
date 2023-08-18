@@ -34,6 +34,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             uid: userInfo.uid,
             username: userInfo.username,
             email: userInfo.email,
+            permSendEmail: userInfo.permSendEmail,
+            isActive: userInfo.isActive,
           })
         })
       } else {
