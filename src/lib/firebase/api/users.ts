@@ -19,7 +19,13 @@ import { auth, db } from '@/lib/config'
 export const getUserInfoByUid = async (args: {
   uid: string
 }): Promise<User> => {
-  let result: User = { uid: '', username: '', email: '' }
+  let result: User = {
+    uid: '',
+    username: '',
+    email: '',
+    permSendEmail: false,
+    isActive: false,
+  }
   try {
     const docRef = doc(db, 'users', args.uid)
     const docSnap = await getDoc(docRef)
@@ -28,6 +34,8 @@ export const getUserInfoByUid = async (args: {
         uid: docSnap.data().uid,
         username: docSnap.data().username,
         email: docSnap.data().email,
+        permSendEmail: docSnap.data().permSendEmail,
+        isActive: docSnap.data().isActive,
       }
     }
   } catch (error) {
