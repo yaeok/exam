@@ -54,8 +54,5 @@ export const getQuestionsByExamTypeId = async (args: {
       explanation: doc.data().explanation,
     }
   })
-  console.log(countOfQuestions)
-  console.log(randomNumbers)
-  console.log(questions)
   return questions
 }
