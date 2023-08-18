@@ -31,14 +31,19 @@ export const getQuestionsByExamTypeId = async (args: {
     querySnapshot.docs[0].id,
     args.examTypeId
   )
+  /** 格納されている全ての問題数を取得する */
   const countOfQuestions: number = await getCountFromServer(
     questionColRef
   ).then((snapshot) => snapshot.data().count)
+  /** 出題問題数分の乱数を生成する
+   * 乱数の最小値は1、最大値は問題数とする
+   */
   const randomNumbers: number[] = generateUniqueRandomNumbers({
     max: countOfQuestions,
     min: 1,
     count: args.limit,
   })
+  /** 生成した乱数とquestionIdが一致した問題を配列で取得する */
   const questionQuery = query(
     questionColRef,
     where('questionId', 'in', randomNumbers),
