@@ -60,7 +60,7 @@ export default function Header() {
           </Heading>
           <Avatar
             size='md'
-            src='public/images/user_icon.png'
+            src='/images/user_icon.png'
             cursor='pointer'
             onClick={onOpen}
           />
