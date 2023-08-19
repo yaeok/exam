@@ -1,6 +1,6 @@
-import { AnswerResult } from '@/common/models/answer_result.model'
+import { AnswerResultFromFirestore } from '@/common/models/answer_result.model'
 
-export const funcCalculation = (list: AnswerResult[]) => {
+export const funcCalculation = (list: AnswerResultFromFirestore[]) => {
   const correctCount = list.reduce((acc, item) => {
     acc += item.numberOfCorrect
     return acc

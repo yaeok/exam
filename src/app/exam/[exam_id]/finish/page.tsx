@@ -38,9 +38,9 @@ export default function FinishScreen({ params }: Props) {
   const result = useRecoilValue(answerResultListState)
   const reset = useResetRecoilState(answerResultListState)
   /** 正解数 */
-  const correctCount = result.filter((r) => r === true).length
+  const correctCount = result.filter((r) => r.result === true).length
   /** 誤答数 */
-  const incorrectCount = result.filter((r) => r === false).length
+  const incorrectCount = result.filter((r) => r.result === false).length
   const onClickHome = async () => {
     setLoading(true)
     await setAnswerResult({

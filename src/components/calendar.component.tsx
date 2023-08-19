@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react'
 import CalendarHeatmap from 'react-calendar-heatmap'
 
 import styles from '@/app/global.module.css'
-import { AnswerResult } from '@/common/models/answer_result.model'
+import { AnswerResultFromFirestore } from '@/common/models/answer_result.model'
 
 type Props = {
-  answerList: AnswerResult[]
+  answerList: AnswerResultFromFirestore[]
 }
 
 export default function Calendar({ answerList }: Props) {
@@ -56,11 +56,11 @@ export default function Calendar({ answerList }: Props) {
 
         // 投稿数に応じてカレンダーの色を変える
         switch (value.count) {
-          case 1:
+          case value.count >= 1 && value.count <= 5:
             return styles.color_scale_1
-          case 2:
+          case value.count > 5 && value.count <= 10:
             return styles.color_scale_2
-          case 3:
+          case value.count > 10:
             return styles.color_scale_3
           default:
             if (value.count >= 4) {
