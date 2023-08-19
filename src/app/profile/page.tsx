@@ -14,7 +14,7 @@ import {
   Text,
   Tr,
 } from '@/common/design'
-import { AnswerResult } from '@/common/models/answer_result.model'
+import { AnswerResultFromFirestore } from '@/common/models/answer_result.model'
 import { userState } from '@/common/states/user'
 import { funcCalculation } from '@/common/utils/calculation'
 import Calendar from '@/components/calendar.component'
@@ -27,22 +27,26 @@ import { getAllAnswerResultFromUid } from '@/lib/firebase/api/users'
  */
 export default function ProfileScreen() {
   const user = useRecoilValue(userState)
-  const [answerResultList, setAnswerResultList] = useState<AnswerResult[]>([])
+  const [answerResultList, setAnswerResultList] = useState<
+    AnswerResultFromFirestore[]
+  >([])
   const [loading, setLoading] = useState<boolean>(true)
   const [correctCount, setCorrectCount] = useState<number>(0)
   const [inCorrectCount, setInCorrectCount] = useState<number>(0)
   const [correctAnswerRate, setCorrectAnswerRate] = useState<number>(0)
   useEffect(() => {
     const fetchAnswerResultList = async () => {
-      await getAllAnswerResultFromUid().then((data: AnswerResult[]) => {
-        if (data.length === 0) return
-        setAnswerResultList(data)
-        const { correctCount, inCorrectCount, correctAnswerRate } =
-          funcCalculation(data)
-        setCorrectCount(correctCount)
-        setInCorrectCount(inCorrectCount)
-        setCorrectAnswerRate(correctAnswerRate)
-      })
+      await getAllAnswerResultFromUid().then(
+        (data: AnswerResultFromFirestore[]) => {
+          if (data.length === 0) return
+          setAnswerResultList(data)
+          const { correctCount, inCorrectCount, correctAnswerRate } =
+            funcCalculation(data)
+          setCorrectCount(correctCount)
+          setInCorrectCount(inCorrectCount)
+          setCorrectAnswerRate(correctAnswerRate)
+        }
+      )
       setLoading(false)
     }
     fetchAnswerResultList()

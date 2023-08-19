@@ -8,7 +8,10 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 
-import { AnswerResult } from '@/common/models/answer_result.model'
+import {
+  AnswerInProgress,
+  AnswerResultFromFirestore,
+} from '@/common/models/answer_result.model'
 import { FirebaseResult } from '@/common/models/firebase_result.model'
 import { User } from '@/common/models/user.model'
 import { auth, db } from '@/lib/config'
@@ -60,7 +63,7 @@ export const setAnswerResult = async (args: {
   correctCount: number
   incorrectCount: number
   examTypeId: string
-  inCorrectAnswerList: boolean[]
+  inCorrectAnswerList: AnswerInProgress[]
 }): Promise<boolean> => {
   let result = false
   const user = auth.currentUser
@@ -83,13 +86,15 @@ export const setAnswerResult = async (args: {
 
 /**
  * 全ての回答結果を取得する
- * @returns Promise<AnswerResult[]>
+ * @returns Promise<AnswerResultFromFirestore[]>
  */
-export const getAllAnswerResultFromUid = async (): Promise<AnswerResult[]> => {
+export const getAllAnswerResultFromUid = async (): Promise<
+  AnswerResultFromFirestore[]
+> => {
   const user = auth.currentUser
   const colRef = collection(db, 'users', user!.uid, 'results')
   const querySnapshot = await getDocs(colRef)
-  const result: AnswerResult[] = []
+  const result: AnswerResultFromFirestore[] = []
   querySnapshot.forEach((doc) => {
     const timestamp = doc.data().executedAt.seconds
     const date = new Date(parseInt(timestamp, 10) * 1000)
