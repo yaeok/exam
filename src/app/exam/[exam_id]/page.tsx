@@ -118,7 +118,10 @@ export default function ExamScreen({ params }: Props) {
     /** 単一回答の結果を格納 */
     setAnswerResult(result)
     /** 回答記録配列に結果を追加 */
-    setAnswers([...answers, result])
+    setAnswers([
+      ...answers,
+      { id: question[numberOfAnswer].questionId, result: result },
+    ])
     onOpen()
   }
 
