@@ -95,7 +95,7 @@ export default function FinishScreen({ params }: Props) {
             </Tr>
             <Tr paddingY='4px' fontSize='20px'>
               <Td>正答率</Td>
-              <Td>{(correctCount / result.length) * 100}%</Td>
+              <Td>{Math.round((correctCount / result.length) * 100)}%</Td>
             </Tr>
           </Tbody>
         </Table>

@@ -10,7 +10,7 @@ export const funcCalculation = (list: AnswerResultFromFirestore[]) => {
     return acc
   }, 0)
   const correctAnswerRate = Math.round(
-    (correctCount / (list.length * list[0].inCorrectAnswerList.length)) * 100
+    (correctCount / (correctCount + inCorrectCount)) * 100
   )
   return {
     correctCount,
