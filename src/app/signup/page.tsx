@@ -196,7 +196,9 @@ export default function SignUpScreen() {
 
             <Button
               marginTop='4'
-              colorScheme='teal'
+              color='white'
+              bg='teal.400'
+              _hover={{ bg: 'teal.500' }}
               isLoading={isSubmitting}
               type='submit'
               paddingX='auto'
