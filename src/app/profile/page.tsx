@@ -99,11 +99,7 @@ export default function ProfileScreen() {
               </Tr>
               <Tr>
                 <Td>回答数</Td>
-                <Td>
-                  {answerResultList[0].inCorrectAnswerList.length *
-                    answerResultList.length}
-                  問
-                </Td>
+                <Td>{correctCount + inCorrectCount}問</Td>
               </Tr>
             </Tbody>
           </Table>
