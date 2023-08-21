@@ -10,7 +10,6 @@ export const generateUniqueRandomNumbers = (args: {
   min: number
   max: number
 }): number[] => {
-  
   if (args.count > args.max - args.min + 1) {
     throw new Error(
       'Cannot generate unique random numbers with the given range and count.'
@@ -24,7 +23,6 @@ export const generateUniqueRandomNumbers = (args: {
   while (uniqueNumbers.size < args.count) {
     const randomNumber =
       Math.floor(Math.random() * (args.max - args.min + 1)) + args.min
-    console.log(randomNumber)
     uniqueNumbers.add(randomNumber)
   }
 
