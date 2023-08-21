@@ -3,11 +3,14 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { FcGoogle } from 'react-icons/fc'
 
 import {
-  Box,
   Button,
+  Divider,
   Flex,
+  FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
@@ -16,8 +19,14 @@ import {
   useToast,
   VStack,
 } from '@/common/design'
-import { validateSignUpScreen } from '@/common/utils/validate'
-import { signUpWithEmail } from '@/lib/firebase/api/auth'
+import { signInWithGoogle, signUpWithEmail } from '@/lib/firebase/api/auth'
+
+// フォームで使用する変数の型を定義
+type formInputs = {
+  email: string
+  password: string
+  confirm: string
+}
 
 /** サインアップ画面
  * @screenname SignUpScreen
@@ -26,53 +35,63 @@ import { signUpWithEmail } from '@/lib/firebase/api/auth'
 export default function SignUpScreen() {
   const router = useRouter()
   const toast = useToast()
-  const { handleSubmit, register } = useForm()
+  const {
+    handleSubmit,
+    register,
+    getValues,
+    formState: { errors, isSubmitting },
+  } = useForm<formInputs>()
 
   const [password, setPassword] = useState(false)
   const [confirm, setConfirm] = useState(false)
 
   const onSubmit = handleSubmit(async (data) => {
-    // バリデーションチェック
-    const error = validateSignUpScreen({
+    await signUpWithEmail({
       email: data.email,
       password: data.password,
-      confirmPassword: data.confirm,
+    }).then((res) => {
+      if (res.isSuccess) {
+        router.push('/home')
+        toast({
+          title: '新規登録に成功しました',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: res.message,
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        })
+      }
     })
-    if (error.isSuccess) {
-      await signUpWithEmail({
-        email: data.email,
-        password: data.password,
-      }).then((res) => {
-        if (res.isSuccess) {
-          router.push('/home')
-          toast({
-            title: '新規登録に成功しました',
-            status: 'success',
-            duration: 2000,
-            isClosable: true,
-          })
-        } else {
-          toast({
-            title: res.message,
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-          })
-        }
-      })
-    } else {
-      // バリデーションエラー
-      toast({
-        title: error.message,
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      })
-    }
   })
 
   const passwordClick = () => setPassword(!password)
   const confirmClick = () => setConfirm(!confirm)
+
+  const onClickGoogle = async () => {
+    await signInWithGoogle().then((res) => {
+      if (res.isSuccess) {
+        router.push('/home')
+        toast({
+          title: res.message,
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: res.message,
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        })
+      }
+    })
+  }
 
   return (
     <Flex height='100vh' justifyContent='center' alignItems='center'>
@@ -80,20 +99,52 @@ export default function SignUpScreen() {
         <Heading>新規登録</Heading>
         <form onSubmit={onSubmit}>
           <VStack alignItems='left'>
-            <Box>
+            <FormControl isInvalid={Boolean(errors.email)}>
               <FormLabel htmlFor='email' textAlign='start'>
                 メールアドレス
               </FormLabel>
-              <Input id='email' {...register('email')} />
-            </Box>
+              <Input
+                id='email'
+                {...register('email', {
+                  required: '必須項目です',
+                  maxLength: {
+                    value: 50,
+                    message: '50文字以内で入力してください',
+                  },
+                  pattern: {
+                    value:
+                      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: 'メールアドレスの形式が違います',
+                  },
+                })}
+              />
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
 
-            <Box>
+            <FormControl isInvalid={Boolean(errors.password)}>
               <FormLabel htmlFor='password'>パスワード</FormLabel>
               <InputGroup size='md'>
                 <Input
                   pr='4.5rem'
                   type={password ? 'text' : 'password'}
-                  {...register('password')}
+                  {...register('password', {
+                    required: '必須項目です',
+                    minLength: {
+                      value: 8,
+                      message: '8文字以上で入力してください',
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: '50文字以内で入力してください',
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Z])[0-9a-zA-Z]*$/,
+                      message:
+                        '半角英数字かつ少なくとも1つの大文字を含めてください',
+                    },
+                  })}
                 />
                 <InputRightElement width='4.5rem'>
                   <Button h='1.75rem' size='sm' onClick={passwordClick}>
@@ -101,15 +152,36 @@ export default function SignUpScreen() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-            </Box>
+              <FormErrorMessage>
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
+            </FormControl>
 
-            <Box>
+            <FormControl isInvalid={Boolean(errors.confirm)}>
               <FormLabel htmlFor='confirm'>パスワード確認</FormLabel>
               <InputGroup size='md'>
                 <Input
                   pr='4.5rem'
                   type={confirm ? 'text' : 'password'}
-                  {...register('confirm')}
+                  {...register('confirm', {
+                    required: '必須項目です',
+                    minLength: {
+                      value: 8,
+                      message: '8文字以上で入力してください',
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: '50文字以内で入力してください',
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Z])[0-9a-zA-Z]*$/,
+                      message:
+                        '半角英数字かつ少なくとも1つの大文字を含めてください',
+                    },
+                    validate: (value) =>
+                      value === getValues('password') ||
+                      'パスワードが一致しません',
+                  })}
                 />
                 <InputRightElement width='4.5rem'>
                   <Button h='1.75rem' size='sm' onClick={confirmClick}>
@@ -117,11 +189,15 @@ export default function SignUpScreen() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-            </Box>
+              <FormErrorMessage>
+                {errors.confirm && errors.confirm.message}
+              </FormErrorMessage>
+            </FormControl>
 
             <Button
               marginTop='4'
               colorScheme='teal'
+              isLoading={isSubmitting}
               type='submit'
               paddingX='auto'
             >
@@ -129,14 +205,17 @@ export default function SignUpScreen() {
             </Button>
           </VStack>
         </form>
-        <Button
-          as={NextLink}
-          href='/signin'
-          bg='white'
-          width='100%'
-          marginTop='20px'
-        >
+        <Button as={NextLink} href='/signin' bg='white' width='100%'>
           ログインはこちらから
+        </Button>
+        <Divider />
+        <Button
+          leftIcon={<FcGoogle />}
+          bg='gray.100'
+          width='100%'
+          onClick={() => onClickGoogle()}
+        >
+          Sign up with Google
         </Button>
       </VStack>
     </Flex>
