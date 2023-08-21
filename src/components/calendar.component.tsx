@@ -55,17 +55,14 @@ export default function Calendar({ answerList }: Props) {
         }
 
         // 投稿数に応じてカレンダーの色を変える
-        switch (value.count) {
-          case value.count >= 1 && value.count <= 5:
-            return styles.color_scale_1
-          case value.count > 5 && value.count <= 10:
-            return styles.color_scale_2
-          case value.count > 10:
-            return styles.color_scale_3
-          default:
-            if (value.count >= 4) {
-              return styles.color_scale_4
-            }
+        if (value.count >= 1 && value.count <= 5) {
+          return styles.color_scale_1
+        } else if (value.count > 5 && value.count <= 10) {
+          return styles.color_scale_2
+        } else if (value.count > 10) {
+          return styles.color_scale_3
+        } else if (value.count >= 4) {
+          return styles.color_scale_4
         }
       }}
     />
