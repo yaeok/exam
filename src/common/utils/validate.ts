@@ -5,39 +5,45 @@ type Validate = {
 }
 
 // サインイン画面のバリデーション
-export const validateSignInScreen = (
-  email: string,
-  password: string
-): Validate => {
-  if (!email) {
-    return { isSuccess: false, message: 'メールアドレスを入力してください' }
-  }
-  if (!password) {
-    return { isSuccess: false, message: 'パスワードを入力してください' }
-  }
-  return { isSuccess: true, message: '' }
-}
+/**
+ * react-hook-formのバリデーションに移行するため、コメントアウト
+ */
+// export const validateSignInScreen = (
+//   email: string,
+//   password: string
+// ): Validate => {
+//   if (!email) {
+//     return { isSuccess: false, message: 'メールアドレスを入力してください' }
+//   }
+//   if (!password) {
+//     return { isSuccess: false, message: 'パスワードを入力してください' }
+//   }
+//   return { isSuccess: true, message: '' }
+// }
 
 // サインアップ画面のバリデーション
-export const validateSignUpScreen = (args: {
-  email: string
-  password: string
-  confirmPassword: string
-}): Validate => {
-  if (!args.email) {
-    return { isSuccess: false, message: 'メールアドレスを入力してください' }
-  }
-  if (!args.password) {
-    return { isSuccess: false, message: 'パスワードを入力してください' }
-  }
-  if (!args.confirmPassword) {
-    return { isSuccess: false, message: '確認用パスワードを入力してください' }
-  }
-  if (args.password !== args.confirmPassword) {
-    return { isSuccess: false, message: 'パスワードが一致しません' }
-  }
-  return { isSuccess: true, message: '' }
-}
+/**
+ * react-hook-formのバリデーションに移行するため、コメントアウト
+ */
+// export const validateSignUpScreen = (args: {
+//   email: string
+//   password: string
+//   confirmPassword: string
+// }): Validate => {
+//   if (!args.email) {
+//     return { isSuccess: false, message: 'メールアドレスを入力してください' }
+//   }
+//   if (!args.password) {
+//     return { isSuccess: false, message: 'パスワードを入力してください' }
+//   }
+//   if (!args.confirmPassword) {
+//     return { isSuccess: false, message: '確認用パスワードを入力してください' }
+//   }
+//   if (args.password !== args.confirmPassword) {
+//     return { isSuccess: false, message: 'パスワードが一致しません' }
+//   }
+//   return { isSuccess: true, message: '' }
+// }
 
 // お問い合わせ画面のバリデーション
 export const validateContactScreen = (args: {

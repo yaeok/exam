@@ -6,21 +6,27 @@ import { useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
 
 import {
-  Box,
   Button,
+  Divider,
   Flex,
+  FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
   useToast,
   VStack,
 } from '@/common/design'
-import { validateSignInScreen } from '@/common/utils/validate'
 import Loading from '@/components/loading.component'
 import { signInWithEmail, signInWithGoogle } from '@/lib/firebase/api/auth'
+
+// フォームで使用する変数の型を定義
+type formInputs = {
+  email: string
+  password: string
+}
 
 /** サインイン画面
  * @screenname SignInScreen
@@ -29,45 +35,39 @@ import { signInWithEmail, signInWithGoogle } from '@/lib/firebase/api/auth'
 export default function SignInScreen() {
   const toast = useToast()
   const router = useRouter()
-  const { handleSubmit, register } = useForm()
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<formInputs>()
+
   const [show, setShow] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
   const onSubmit = handleSubmit(async (data) => {
     setLoading(true)
     // バリデーションチェック
-    const error = validateSignInScreen(data.email, data.password)
-    if (error.isSuccess) {
-      await signInWithEmail({
-        email: data.email,
-        password: data.password,
-      }).then((res) => {
-        if (res.isSuccess) {
-          router.push('/home')
-          toast({
-            title: 'ログインに成功しました',
-            status: 'success',
-            duration: 2000,
-            isClosable: true,
-          })
-        } else {
-          toast({
-            title: res.message,
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-          })
-        }
-      })
-    } else {
-      // バリデーションエラー
-      toast({
-        title: error.message,
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      })
-    }
+    await signInWithEmail({
+      email: data.email,
+      password: data.password,
+    }).then((res) => {
+      if (res.isSuccess) {
+        router.push('/home')
+        toast({
+          title: 'ログインに成功しました',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: res.message,
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        })
+      }
+    })
     setLoading(false)
   })
   const onClickGoogle = async () => {
@@ -104,20 +104,52 @@ export default function SignInScreen() {
         <Heading>ログイン</Heading>
         <form onSubmit={onSubmit}>
           <VStack spacing='4' alignItems='left'>
-            <Box>
+            <FormControl isInvalid={Boolean(errors.email)}>
               <FormLabel htmlFor='email' textAlign='start'>
                 メールアドレス
               </FormLabel>
-              <Input id='email' {...register('email')} />
-            </Box>
+              <Input
+                id='email'
+                {...register('email', {
+                  required: '必須項目です',
+                  maxLength: {
+                    value: 50,
+                    message: '50文字以内で入力してください',
+                  },
+                  pattern: {
+                    value:
+                      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: 'メールアドレスの形式が違います',
+                  },
+                })}
+              />
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
 
-            <Box>
+            <FormControl isInvalid={Boolean(errors.password)}>
               <FormLabel htmlFor='password'>パスワード</FormLabel>
               <InputGroup size='md'>
                 <Input
                   pr='4.5rem'
                   type={show ? 'text' : 'password'}
-                  {...register('password')}
+                  {...register('password', {
+                    required: '必須項目です',
+                    minLength: {
+                      value: 8,
+                      message: '8文字以上で入力してください',
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: '50文字以内で入力してください',
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Z])[0-9a-zA-Z]*$/,
+                      message:
+                        '半角英数字かつ少なくとも1つの大文字を含めてください',
+                    },
+                  })}
                 />
                 <InputRightElement width='4.5rem'>
                   <Button h='1.75rem' size='sm' onClick={() => setShow(!show)}>
@@ -125,37 +157,44 @@ export default function SignInScreen() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-            </Box>
+              <FormErrorMessage>
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
+            </FormControl>
             <Button
               marginTop='4'
-              colorScheme='teal'
+              color='white'
+              bg='teal.400'
+              _hover={{ bg: 'teal.500' }}
+              isLoading={isSubmitting}
               type='submit'
               paddingX='auto'
             >
               ログイン
             </Button>
+            <Button
+              as={NextLink}
+              bg='white'
+              color='black'
+              href='/signup'
+              width='100%'
+            >
+              新規登録はこちらから
+            </Button>
+            <Divider />
             <Flex
               flexDirection='column'
               width='100%'
               justifyContent='center'
               alignItems='center'
             >
-              <Icon
-                as={FcGoogle}
-                marginTop='20px'
-                width='6'
-                height='6'
-                cursor='pointer'
-                onClick={() => onClickGoogle()}
-              />
               <Button
-                as={NextLink}
-                href='/signup'
-                bg='white'
+                leftIcon={<FcGoogle />}
+                bg='gray.100'
                 width='100%'
-                marginTop='20px'
+                onClick={() => onClickGoogle()}
               >
-                新規登録はこちらから
+                Sign in with Google
               </Button>
             </Flex>
           </VStack>
