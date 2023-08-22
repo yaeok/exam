@@ -165,10 +165,13 @@ export default function SignInScreen() {
               marginTop='4'
               color='white'
               bg='teal.400'
-              _hover={{ bg: 'teal.500' }}
               isLoading={isSubmitting}
               type='submit'
               paddingX='auto'
+              _hover={{
+                borderColor: 'transparent',
+                boxShadow: '0 7px 10px rgba(0, 0, 0, 0.3)',
+              }}
             >
               ログイン
             </Button>
@@ -178,6 +181,10 @@ export default function SignInScreen() {
               color='black'
               href='/signup'
               width='100%'
+              _hover={{
+                borderColor: 'transparent',
+                boxShadow: '0 7px 10px rgba(0, 0, 0, 0.3)',
+              }}
             >
               新規登録はこちらから
             </Button>
@@ -195,8 +202,8 @@ export default function SignInScreen() {
                 onClick={() => onClickGoogle()}
                 transition='all: .3s'
                 _hover={{
-                  top: '-3px',
-                  boxShadow: '0 2px 3px rgba(0, 0, 0, 0.3)',
+                  borderColor: 'transparent',
+                  boxShadow: '0 7px 10px rgba(0, 0, 0, 0.3)',
                 }}
               >
                 Sign in with Google
