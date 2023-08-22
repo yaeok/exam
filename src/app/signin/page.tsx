@@ -193,6 +193,11 @@ export default function SignInScreen() {
                 bg='gray.100'
                 width='100%'
                 onClick={() => onClickGoogle()}
+                transition='all: .3s'
+                _hover={{
+                  top: '-3px',
+                  boxShadow: '0 2px 3px rgba(0, 0, 0, 0.3)',
+                }}
               >
                 Sign in with Google
               </Button>
