@@ -115,7 +115,15 @@ export default function HomeScreen() {
               <Heading size='sm' textAlign='center'>
                 {choiceCert}
               </Heading>
-              <Button onClick={() => pageTransition()}>スタート</Button>
+              <Button
+                _hover={{
+                  borderColor: 'transparent',
+                  boxShadow: '0 7px 10px rgba(0, 0, 0, 0.3)',
+                }}
+                onClick={() => pageTransition()}
+              >
+                スタート
+              </Button>
               <Flex
                 width='100%'
                 bg='red.200'
