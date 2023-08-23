@@ -105,7 +105,17 @@ export default function UpdateProfileScreen() {
             </Flex>
           </Box>
         </VStack>
-        <Button width='100%' marginTop='4' colorScheme='teal' type='submit'>
+        <Button
+          width='100%'
+          marginTop='4'
+          color='white'
+          bg='teal.400'
+          type='submit'
+          _hover={{
+            borderColor: 'transparent',
+            boxShadow: '0 7px 10px rgba(0, 0, 0, 0.3)',
+          }}
+        >
           更新する
         </Button>
       </form>
